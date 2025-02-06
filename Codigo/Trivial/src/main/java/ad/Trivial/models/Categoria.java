@@ -39,9 +39,9 @@ public class Categoria {
     /**
      * Preguntas asociadas a esta categoría.
      */
-    @Schema(description = "Lista de preguntas asociadas a esta categoría.", accessMode = Schema.AccessMode.READ_ONLY)
+    /*@Schema(description = "Lista de preguntas asociadas a esta categoría.", accessMode = Schema.AccessMode.READ_ONLY)
     @OneToMany(mappedBy = "categoria", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Pregunta> preguntas;
+    private List<Pregunta> preguntas;*/
 
     public Categoria() {
     }
@@ -70,11 +70,11 @@ public class Categoria {
         this.descripcion = descripcion;
     }
 
-    public List<Pregunta> getPreguntas() {
+    /*public List<Pregunta> getPreguntas() {
         return preguntas;
     }
 
     public void setPreguntas(List<Pregunta> preguntas) {
         this.preguntas = preguntas;
-    }
+    }*/
 }
