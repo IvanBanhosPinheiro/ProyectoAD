@@ -4,7 +4,7 @@ CREATE DATABASE if not exists trivial;
 USE trivial;
 
 -- Crear la tabla usuario
-CREATE TABLE IF NOT EXISTS usuario (
+CREATE TABLE usuario (
     id BIGINT PRIMARY KEY AUTO_INCREMENT,
     nombre varchar(50) NOT NULL,
     email varchar(50) UNIQUE NOT NULL,
@@ -13,7 +13,7 @@ CREATE TABLE IF NOT EXISTS usuario (
 );
 
 -- Crear la tabla categoria con el campo 'descripcion' como VARCHAR(255)
-CREATE TABLE IF NOT EXISTS categoria (
+CREATE TABLE categoria (
     id BIGINT PRIMARY KEY AUTO_INCREMENT,
     nombre VARCHAR(50) NOT NULL,
     descripcion VARCHAR(255) NULL, -- Campo para describir la categoría
@@ -21,7 +21,7 @@ CREATE TABLE IF NOT EXISTS categoria (
 );
 
 -- Crear la tabla pregunta
-CREATE TABLE IF NOT EXISTS pregunta (
+CREATE TABLE pregunta (
     id BIGINT PRIMARY KEY AUTO_INCREMENT,
     texto varchar(250) NOT NULL,
     categoria_id BIGINT,
@@ -29,7 +29,7 @@ CREATE TABLE IF NOT EXISTS pregunta (
 );
 
 -- Crear la tabla respuesta
-CREATE TABLE IF NOT EXISTS respuesta (
+CREATE TABLE respuesta (
     id BIGINT PRIMARY KEY AUTO_INCREMENT,
     texto varchar(250) NOT NULL,
     es_correcta BOOLEAN NOT NULL,
@@ -38,7 +38,7 @@ CREATE TABLE IF NOT EXISTS respuesta (
 );
 
 -- Crear la tabla partida
-CREATE TABLE IF NOT EXISTS partida (
+CREATE TABLE partida (
     id BIGINT PRIMARY KEY AUTO_INCREMENT,
     fecha_inicio TIMESTAMP NOT NULL,
     fecha_fin TIMESTAMP,
@@ -48,7 +48,7 @@ CREATE TABLE IF NOT EXISTS partida (
 );
 
 -- Crear la tabla usuario_pregunta
-CREATE TABLE IF NOT EXISTS usuario_pregunta_partida (
+CREATE TABLE usuario_pregunta_partida (
     usuario_id BIGINT,
     pregunta_id BIGINT,
     partida_id BIGINT,

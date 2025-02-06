@@ -1,7 +1,4 @@
--- Crear la base de datos
-drop  DATABASE if exists trivial;
-CREATE DATABASE if not exists trivial;
-USE trivial;
+
 
 -- Crear la tabla usuario
 CREATE TABLE IF NOT EXISTS usuario (
@@ -38,7 +35,7 @@ CREATE TABLE IF NOT EXISTS respuesta (
 );
 
 -- Crear la tabla partida
-CREATE TABLE IF NOT EXISTS partida (
+CREATE TABLE  IF NOT EXISTS partida (
     id BIGINT PRIMARY KEY AUTO_INCREMENT,
     fecha_inicio TIMESTAMP NOT NULL,
     fecha_fin TIMESTAMP,
