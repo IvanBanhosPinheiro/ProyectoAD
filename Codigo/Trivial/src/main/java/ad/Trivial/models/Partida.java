@@ -3,12 +3,11 @@ package ad.Trivial.models;
 import jakarta.persistence.*;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.Date;
-import java.util.List;
 
 /**
  * Representa una partida en el sistema.
  */
-
+@Schema(description = "Entidad que representa una partida de trivial")
 @Entity
 @Table(name = "partida")
 public class Partida {
@@ -39,22 +38,16 @@ public class Partida {
      * Puntuación obtenida en la partida.
      */
     @Schema(description = "Puntuación obtenida en la partida.", example = "85")
-    private Integer puntuación;
+    private Integer puntuacion;
 
     /**
      * Usuario que realizó la partida.
      */
     @Schema(description = "Usuario que realizó la partida.", accessMode = Schema.AccessMode.READ_ONLY)
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "usuario_id", nullable = false)
     private Usuario usuario;
 
-    /**
-     * Registros de preguntas respondidas por el usuario en la partida.
-     */
-    /*@Schema(description = "Registros de preguntas respondidas por el usuario en la partida.", accessMode = Schema.AccessMode.READ_ONLY)
-    @OneToMany(mappedBy = "partida", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<UsuarioPreguntaPartida> registros;*/
 
     public Partida() {
     }
@@ -83,12 +76,12 @@ public class Partida {
         this.fechaFin = fechaFin;
     }
 
-    public Integer getPuntuación() {
-        return puntuación;
+    public Integer getPuntuacion() {
+        return puntuacion;
     }
 
-    public void setPuntuación(Integer puntuación) {
-        this.puntuación = puntuación;
+    public void setPuntuacion(Integer puntuacion) {
+        this.puntuacion = puntuacion;
     }
 
     public Usuario getUsuario() {
@@ -99,11 +92,4 @@ public class Partida {
         this.usuario = usuario;
     }
 
-    /*public List<UsuarioPreguntaPartida> getRegistros() {
-        return registros;
-    }
-
-    public void setRegistros(List<UsuarioPreguntaPartida> registros) {
-        this.registros = registros;
-    }*/
 }

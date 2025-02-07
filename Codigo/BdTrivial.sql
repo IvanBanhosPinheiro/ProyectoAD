@@ -42,18 +42,18 @@ CREATE TABLE IF NOT EXISTS partida (
     id BIGINT PRIMARY KEY AUTO_INCREMENT,
     fecha_inicio TIMESTAMP NOT NULL,
     fecha_fin TIMESTAMP,
-    puntuación INT,
+    puntuacion INT,
     usuario_id BIGINT,
     FOREIGN KEY (usuario_id) REFERENCES usuario(id)
 );
 
 -- Crear la tabla usuario_pregunta
 CREATE TABLE IF NOT EXISTS usuario_pregunta_partida (
+    id BIGINT PRIMARY KEY AUTO_INCREMENT,
     usuario_id BIGINT,
     pregunta_id BIGINT,
     partida_id BIGINT,
     acertada BOOLEAN NOT NULL,
-    PRIMARY KEY (usuario_id, pregunta_id, partida_id),
     FOREIGN KEY (usuario_id) REFERENCES usuario(id),
     FOREIGN KEY (pregunta_id) REFERENCES pregunta(id),
     FOREIGN KEY (partida_id) REFERENCES partida(id)

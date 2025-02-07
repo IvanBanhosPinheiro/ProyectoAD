@@ -7,7 +7,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 /**
  * Representa una respuesta a una pregunta.
  */
-
+@Schema(description = "Entidad que representa una posible respuesta a una pregunta")
 @Entity
 @Table(name = "respuesta")
 public class Respuesta {
@@ -31,13 +31,14 @@ public class Respuesta {
      * Indica si la respuesta es correcta.
      */
     @Schema(description = "Indica si la respuesta es correcta.", example = "true")
+    @Column(nullable = false)
     private boolean esCorrecta;
 
     /**
      * Pregunta a la que pertenece la respuesta.
      */
     @Schema(description = "Pregunta a la que pertenece la respuesta.", accessMode = Schema.AccessMode.READ_ONLY)
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "pregunta_id", nullable = false)
     private Pregunta pregunta;
 

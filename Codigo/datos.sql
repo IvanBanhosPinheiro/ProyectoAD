@@ -1,5 +1,14 @@
 -- Inicio del script de inserción de datos
 
+-- Crear el usuario administrador
+INSERT INTO usuario (nombre, email, rol, contraseña) VALUES
+('Admin Usuario', 'admin@ejemplo.com', 'admin', 'contraseña_segura');
+
+-- Crear el usuario normal
+INSERT INTO usuario (nombre, email, rol, contraseña) VALUES
+('Jugador 1', 'jugador1@ejemplo.com', 'usuario', 'contraseña_segura');
+
+
 -- Insertar categoríascategoria
 INSERT INTO categoria (nombre, descripcion) VALUES
 ('Historia', 'Preguntas relacionadas con eventos históricos y personajes importantes.'),
@@ -1113,3 +1122,167 @@ INSERT INTO respuesta (texto, es_correcta, pregunta_id) VALUES
 ('Fernando de Magallanes', TRUE, LAST_INSERT_ID()),
 ('Hernán Cortés', FALSE, LAST_INSERT_ID()),
 ('Vasco Núñez de Balboa', FALSE, LAST_INSERT_ID());
+
+
+-- Simulación de una partida para el jugador con ID 2 (Jugador 1)
+SET @usuario_id = 2;
+SET @fecha_inicio = NOW();
+SET @fecha_fin = DATE_ADD(@fecha_inicio, INTERVAL 20 MINUTE);
+SET @resultado = 'finalizada';
+SET @puntuacion = 15;  -- Supongamos que el jugador respondió correctamente 15 preguntas
+
+-- Crear la partida
+INSERT INTO partida (usuario_id, fecha_inicio, fecha_fin, resultado, puntuacion)
+VALUES (@usuario_id, @fecha_inicio, @fecha_fin, @resultado, @puntuacion);
+
+-- Obtener el ID de la última partida insertada
+SET @partida_id = LAST_INSERT_ID();
+
+-- Respuestas de la partida (20 preguntas de 4 categorías)
+-- Aquí hago una inserción simulada de respuestas correctas (TRUE) y incorrectas (FALSE)
+
+-- Categoría Historia
+-- Pregunta 1
+INSERT INTO respuesta_partida (partida_id, pregunta_id, respuesta_id, es_correcta) VALUES 
+(@partida_id, 1, 1, TRUE),  -- Correcta
+(@partida_id, 1, 2, FALSE), -- Incorrecta
+(@partida_id, 1, 3, FALSE),
+(@partida_id, 1, 4, FALSE);
+
+-- Pregunta 2
+INSERT INTO respuesta_partida (partida_id, pregunta_id, respuesta_id, es_correcta) VALUES 
+(@partida_id, 2, 3, TRUE),  -- Correcta
+(@partida_id, 2, 1, FALSE), 
+(@partida_id, 2, 2, FALSE),
+(@partida_id, 2, 4, FALSE);
+
+-- Pregunta 3
+INSERT INTO respuesta_partida (partida_id, pregunta_id, respuesta_id, es_correcta) VALUES 
+(@partida_id, 3, 1, TRUE),  -- Correcta
+(@partida_id, 3, 2, FALSE), 
+(@partida_id, 3, 3, FALSE),
+(@partida_id, 3, 4, FALSE);
+
+-- Pregunta 4
+INSERT INTO respuesta_partida (partida_id, pregunta_id, respuesta_id, es_correcta) VALUES 
+(@partida_id, 4, 1, TRUE),  -- Correcta
+(@partida_id, 4, 2, FALSE), 
+(@partida_id, 4, 3, FALSE),
+(@partida_id, 4, 4, FALSE);
+
+-- Pregunta 5
+INSERT INTO respuesta_partida (partida_id, pregunta_id, respuesta_id, es_correcta) VALUES 
+(@partida_id, 5, 1, TRUE),  -- Correcta
+(@partida_id, 5, 2, FALSE), 
+(@partida_id, 5, 3, FALSE),
+(@partida_id, 5, 4, FALSE);
+
+-- Repetir la misma estructura para otras categorías: Ciencias, Literatura, Deportes
+-- Ejemplo de la categoría Ciencias:
+
+-- Pregunta 6
+INSERT INTO respuesta_partida (partida_id, pregunta_id, respuesta_id, es_correcta) VALUES 
+(@partida_id, 6, 1, TRUE),  -- Correcta
+(@partida_id, 6, 2, FALSE),
+(@partida_id, 6, 3, FALSE),
+(@partida_id, 6, 4, FALSE);
+
+-- Pregunta 7
+INSERT INTO respuesta_partida (partida_id, pregunta_id, respuesta_id, es_correcta) VALUES 
+(@partida_id, 7, 3, TRUE),  -- Correcta
+(@partida_id, 7, 1, FALSE),
+(@partida_id, 7, 2, FALSE),
+(@partida_id, 7, 4, FALSE);
+
+-- Pregunta 8
+INSERT INTO respuesta_partida (partida_id, pregunta_id, respuesta_id, es_correcta) VALUES 
+(@partida_id, 8, 2, TRUE),  -- Correcta
+(@partida_id, 8, 1, FALSE),
+(@partida_id, 8, 3, FALSE),
+(@partida_id, 8, 4, FALSE);
+
+-- Pregunta 9
+INSERT INTO respuesta_partida (partida_id, pregunta_id, respuesta_id, es_correcta) VALUES 
+(@partida_id, 9, 1, TRUE),  -- Correcta
+(@partida_id, 9, 2, FALSE),
+(@partida_id, 9, 3, FALSE),
+(@partida_id, 9, 4, FALSE);
+
+-- Pregunta 10
+INSERT INTO respuesta_partida (partida_id, pregunta_id, respuesta_id, es_correcta) VALUES 
+(@partida_id, 10, 4, TRUE),  -- Correcta
+(@partida_id, 10, 1, FALSE),
+(@partida_id, 10, 2, FALSE),
+(@partida_id, 10, 3, FALSE);
+
+-- Categoría Literatura
+-- Pregunta 11
+INSERT INTO respuesta_partida (partida_id, pregunta_id, respuesta_id, es_correcta) VALUES 
+(@partida_id, 11, 1, TRUE),  -- Correcta
+(@partida_id, 11, 2, FALSE),
+(@partida_id, 11, 3, FALSE),
+(@partida_id, 11, 4, FALSE);
+
+-- Pregunta 12
+INSERT INTO respuesta_partida (partida_id, pregunta_id, respuesta_id, es_correcta) VALUES 
+(@partida_id, 12, 2, TRUE),  -- Correcta
+(@partida_id, 12, 1, FALSE),
+(@partida_id, 12, 3, FALSE),
+(@partida_id, 12, 4, FALSE);
+
+-- Pregunta 13
+INSERT INTO respuesta_partida (partida_id, pregunta_id, respuesta_id, es_correcta) VALUES 
+(@partida_id, 13, 3, TRUE),  -- Correcta
+(@partida_id, 13, 1, FALSE),
+(@partida_id, 13, 2, FALSE),
+(@partida_id, 13, 4, FALSE);
+
+-- Pregunta 14
+INSERT INTO respuesta_partida (partida_id, pregunta_id, respuesta_id, es_correcta) VALUES 
+(@partida_id, 14, 1, TRUE),  -- Correcta
+(@partida_id, 14, 2, FALSE),
+(@partida_id, 14, 3, FALSE),
+(@partida_id, 14, 4, FALSE);
+
+-- Pregunta 15
+INSERT INTO respuesta_partida (partida_id, pregunta_id, respuesta_id, es_correcta) VALUES 
+(@partida_id, 15, 4, TRUE),  -- Correcta
+(@partida_id, 15, 1, FALSE),
+(@partida_id, 15, 2, FALSE),
+(@partida_id, 15, 3, FALSE);
+
+-- Categoría Deportes
+-- Pregunta 16
+INSERT INTO respuesta_partida (partida_id, pregunta_id, respuesta_id, es_correcta) VALUES 
+(@partida_id, 16, 1, TRUE),  -- Correcta
+(@partida_id, 16, 2, FALSE),
+(@partida_id, 16, 3, FALSE),
+(@partida_id, 16, 4, FALSE);
+
+-- Pregunta 17
+INSERT INTO respuesta_partida (partida_id, pregunta_id, respuesta_id, es_correcta) VALUES 
+(@partida_id, 17, 3, TRUE),  -- Correcta
+(@partida_id, 17, 1, FALSE),
+(@partida_id, 17, 2, FALSE),
+(@partida_id, 17, 4, FALSE);
+
+-- Pregunta 18
+INSERT INTO respuesta_partida (partida_id, pregunta_id, respuesta_id, es_correcta) VALUES 
+(@partida_id, 18, 2, TRUE),  -- Correcta
+(@partida_id, 18, 1, FALSE),
+(@partida_id, 18, 3, FALSE),
+(@partida_id, 18, 4, FALSE);
+
+-- Pregunta 19
+INSERT INTO respuesta_partida (partida_id, pregunta_id, respuesta_id, es_correcta) VALUES 
+(@partida_id, 19, 1, TRUE),  -- Correcta
+(@partida_id, 19, 2, FALSE),
+(@partida_id, 19, 3, FALSE),
+(@partida_id, 19, 4, FALSE);
+
+-- Pregunta 20
+INSERT INTO respuesta_partida (partida_id, pregunta_id, respuesta_id, es_correcta) VALUES 
+(@partida_id, 20, 4, TRUE),  -- Correcta
+(@partida_id, 20, 1, FALSE),
+(@partida_id, 20, 2, FALSE),
+(@partida_id, 20, 3, FALSE);

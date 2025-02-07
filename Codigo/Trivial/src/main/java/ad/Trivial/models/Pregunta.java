@@ -8,6 +8,7 @@ import java.util.List;
 /**
  * Representa una pregunta en el sistema.
  */
+@Schema(description = "Entidad que representa una pregunta del trivial")
 @Entity
 @Table(name = "pregunta")
 public class Pregunta {
@@ -31,16 +32,10 @@ public class Pregunta {
      * Categoría a la que pertenece la pregunta.
      */
     @Schema(description = "Categoría a la que pertenece la pregunta.", accessMode = Schema.AccessMode.READ_ONLY)
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "categoria_id", nullable = false)
     private Categoria categoria;
 
-    /**
-     * Respuestas asociadas a esta pregunta.
-     */
-    @Schema(description = "Lista de respuestas asociadas a esta pregunta.", accessMode = Schema.AccessMode.READ_ONLY)
-    @OneToMany(mappedBy = "pregunta", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Respuesta> respuestas;
 
     public Pregunta() {
     }
@@ -69,11 +64,4 @@ public class Pregunta {
         this.categoria = categoria;
     }
 
-    public List<Respuesta> getRespuestas() {
-        return respuestas;
-    }
-
-    public void setRespuestas(List<Respuesta> respuestas) {
-        this.respuestas = respuestas;
-    }
 }

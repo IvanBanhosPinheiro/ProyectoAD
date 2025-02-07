@@ -1,5 +1,11 @@
 -- Inicio del script de inserción de datos
+-- Crear el usuario administrador
+INSERT INTO usuario (nombre, email, rol, contraseña) VALUES
+('Admin Usuario', 'admin@ejemplo.com', 'admin', 'contraseña_segura');
 
+-- Crear el usuario normal
+INSERT INTO usuario (nombre, email, rol, contraseña) VALUES
+('Jugador 1', 'jugador1@ejemplo.com', 'usuario', 'contraseña_segura');
 -- Insertar categoríascategoria
 INSERT INTO categoria (nombre, descripcion) VALUES
 ('Historia', 'Preguntas relacionadas con eventos históricos y personajes importantes.'),
@@ -1113,3 +1119,57 @@ INSERT INTO respuesta (texto, es_correcta, pregunta_id) VALUES
 ('Fernando de Magallanes', TRUE, (SELECT id FROM pregunta ORDER BY id DESC LIMIT 1)),
 ('Hernán Cortés', FALSE, (SELECT id FROM pregunta ORDER BY id DESC LIMIT 1)),
 ('Vasco Núñez de Balboa', FALSE, (SELECT id FROM pregunta ORDER BY id DESC LIMIT 1));
+
+-- Simulación de una partida para el jugador con ID 2 (Jugador 1)
+SET @usuario_id = 2;
+-- Establecer la fecha de inicio
+SET @fecha_inicio = CURRENT_TIMESTAMP;
+
+-- Calcular la fecha de fin añadiendo 20 minutos
+SET @fecha_fin = DATEADD(MINUTE, 20, @fecha_inicio);
+
+-- Suponiendo que el jugador respondió correctamente 15 preguntas
+SET @puntuacion = 15;
+-- Crear la partida
+INSERT INTO partida (usuario_id, fecha_inicio, fecha_fin, puntuacion)
+VALUES (@usuario_id, @fecha_inicio, @fecha_fin, @puntuacion);
+
+-- Obtener el ID de la última partida insertada
+SET @partida_id = (SELECT id FROM partida ORDER BY id DESC LIMIT 1);
+
+-- Simular respuestas para 20 preguntas (5 de cada categoría)
+-- Categoría 1 (Ejemplo: Geografía)
+-- Pregunta 1
+INSERT INTO usuario_pregunta_partida (usuario_id, pregunta_id, partida_id, acertada)
+VALUES (@usuario_id, 1, @partida_id, TRUE),  -- Correcta
+       (@usuario_id, 2, @partida_id, FALSE), -- Incorrecta
+       (@usuario_id, 3, @partida_id, FALSE), -- Incorrecta
+       (@usuario_id, 4, @partida_id, FALSE), -- Incorrecta
+       (@usuario_id, 5, @partida_id, FALSE); -- Incorrecta
+
+-- Categoría 2 (Ejemplo: Historia)
+-- Pregunta 6
+INSERT INTO usuario_pregunta_partida (usuario_id, pregunta_id, partida_id, acertada)
+VALUES (@usuario_id, 6, @partida_id, TRUE),  -- Correcta
+       (@usuario_id, 7, @partida_id, FALSE),
+       (@usuario_id, 8, @partida_id, FALSE),
+       (@usuario_id, 9, @partida_id, FALSE),
+       (@usuario_id, 10, @partida_id, FALSE);
+
+-- Categoría 3 (Ejemplo: Ciencia)
+-- Pregunta 11
+INSERT INTO usuario_pregunta_partida (usuario_id, pregunta_id, partida_id, acertada)
+VALUES (@usuario_id, 11, @partida_id, TRUE),  -- Correcta
+       (@usuario_id, 12, @partida_id, FALSE),
+       (@usuario_id, 13, @partida_id, FALSE),
+       (@usuario_id, 14, @partida_id, FALSE),
+       (@usuario_id, 15, @partida_id, FALSE);
+
+-- Categoría 4 (Ejemplo: Arte)
+-- Pregunta 16
+INSERT INTO usuario_pregunta_partida (usuario_id, pregunta_id, partida_id, acertada)
+VALUES (@usuario_id, 16, @partida_id, TRUE),  -- Correcta
+       (@usuario_id, 17, @partida_id, FALSE),
+       (@usuario_id, 18, @partida_id, FALSE),
+       (@usuario_id, 19, @partida_id, FALSE),
+       (@usuario_id, 20, @partida_id, FALSE);

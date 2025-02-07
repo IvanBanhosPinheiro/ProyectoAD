@@ -4,12 +4,10 @@ import jakarta.persistence.*;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 
-import java.util.List;
-
 /**
  * Representa una categoría de preguntas.
  */
-
+@Schema(description = "Entidad que representa una categoría de preguntas")
 @Entity
 @Table(name = "categoria")
 public class Categoria {
@@ -36,12 +34,6 @@ public class Categoria {
     @Column(length = 255)
     private String descripcion;
 
-    /**
-     * Preguntas asociadas a esta categoría.
-     */
-    /*@Schema(description = "Lista de preguntas asociadas a esta categoría.", accessMode = Schema.AccessMode.READ_ONLY)
-    @OneToMany(mappedBy = "categoria", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Pregunta> preguntas;*/
 
     public Categoria() {
     }

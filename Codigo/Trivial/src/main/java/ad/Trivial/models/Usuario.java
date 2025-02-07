@@ -3,12 +3,11 @@ package ad.Trivial.models;
 import jakarta.persistence.*;
 import io.swagger.v3.oas.annotations.media.Schema;
 
-import java.util.List;
 
 /**
  * Representa a un usuario en el sistema.
  */
-
+@Schema(description = "Entidad que representa a un usuario en el sistema")
 @Entity
 @Table(name = "usuario")
 public class Usuario {
@@ -50,12 +49,6 @@ public class Usuario {
     @Column(nullable = false)
     private Rol rol;
 
-    /**
-     * Partidas asociadas al usuario.
-     */
-    @Schema(description = "Lista de partidas asociadas al usuario.", accessMode = Schema.AccessMode.READ_ONLY)
-    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Partida> partidas;
 
     /**
      * Enumeración para los roles de usuario.
@@ -107,11 +100,7 @@ public class Usuario {
         this.rol = rol;
     }
 
-    public List<Partida> getPartidas() {
-        return partidas;
-    }
 
-    public void setPartidas(List<Partida> partidas) {
-        this.partidas = partidas;
-    }
 }
+
+
