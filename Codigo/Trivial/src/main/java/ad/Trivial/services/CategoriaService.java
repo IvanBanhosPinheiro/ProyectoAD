@@ -16,4 +16,21 @@ public class CategoriaService {
     public List<Categoria> obtenerTodas(){
         return categoriaRepository.findAll();
     }
+
+    public Categoria guardar(Categoria categoria){
+        return categoriaRepository.save(categoria);
+    }
+
+    public Categoria actualizar(Categoria categoria){
+        if (categoria.getId() == null){
+            return null;
+        }else {
+            return categoriaRepository.save(categoria);
+        }
+    }
+
+    public void eliminar(Long id){
+        categoriaRepository.deleteById(id);
+    }
+
 }

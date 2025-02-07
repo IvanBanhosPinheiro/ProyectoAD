@@ -16,4 +16,20 @@ public class Preguntaservice {
     public List<Pregunta> obtenerTodas(){
         return preguntaRepository.findAll();
     }
+    public Pregunta guardar(Pregunta pregunta){
+        return preguntaRepository.save(pregunta);
+    }
+
+    public Pregunta actualizar(Pregunta pregunta){
+        if (pregunta.getId() == null){
+            return null;
+        }else {
+            return preguntaRepository.save(pregunta);
+        }
+    }
+
+    public void eliminar(Long id){
+        preguntaRepository.deleteById(id);
+    }
+
 }

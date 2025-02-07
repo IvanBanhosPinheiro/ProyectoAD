@@ -62,11 +62,4 @@ public class Categoria {
         this.descripcion = descripcion;
     }
 
-    /*public List<Pregunta> getPreguntas() {
-        return preguntas;
-    }
-
-    public void setPreguntas(List<Pregunta> preguntas) {
-        this.preguntas = preguntas;
-    }*/
 }
