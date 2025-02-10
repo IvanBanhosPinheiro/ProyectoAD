@@ -24,8 +24,8 @@ public class Respuesta {
      * Texto de la respuesta.
      */
     @Schema(description = "Texto de la respuesta.", example = "El Nilo", maxLength = 250)
-    @Column(nullable = false, length = 250)
-    private String texto;
+    @Column(name = "texto", nullable = false, length = 250)
+    private String respuesta;
 
     /**
      * Indica si la respuesta es correcta.
@@ -53,12 +53,12 @@ public class Respuesta {
         this.id = id;
     }
 
-    public String getTexto() {
-        return texto;
+    public String getRespuesta() {
+        return respuesta;
     }
 
-    public void setTexto(String texto) {
-        this.texto = texto;
+    public void setRespuesta(String respuesta) {
+        this.respuesta = respuesta;
     }
 
     public boolean isEsCorrecta() {

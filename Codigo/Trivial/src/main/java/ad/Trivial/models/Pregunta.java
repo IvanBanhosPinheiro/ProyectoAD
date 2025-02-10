@@ -25,7 +25,7 @@ public class Pregunta {
      * Texto de la pregunta.
      */
     @Schema(description = "Texto de la pregunta.", example = "¿Cuál es el río más largo del mundo?", maxLength = 250)
-    @Column(nullable = false, length = 250)
+    @Column(name = "texto", nullable = false, length = 250)
     private String texto;
 
     /**

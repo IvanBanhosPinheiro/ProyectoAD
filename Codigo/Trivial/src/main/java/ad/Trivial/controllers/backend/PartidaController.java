@@ -1,4 +1,4 @@
-package ad.Trivial.controllers;
+package ad.Trivial.controllers.backend;
 
 import ad.Trivial.models.Partida;
 import ad.Trivial.services.PartidaService;

@@ -1,6 +1,7 @@
 package ad.Trivial.services;
 
 import ad.Trivial.models.Pregunta;
+import ad.Trivial.models.modelosDTO.PreguntasDTO;
 import ad.Trivial.repositories.PreguntaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,5 +32,13 @@ public class Preguntaservice {
     public void eliminar(Long id){
         preguntaRepository.deleteById(id);
     }
+
+    /*public List<PreguntasDTO> obtenerPreguntasDeCategoria(Long id){
+        preguntaRepository.preguntasDeUnaCategoria(id).stream().map(fila->{
+            System.out.println(fila[0]);
+           return null;
+        });
+        return null;
+    }*/
 
 }

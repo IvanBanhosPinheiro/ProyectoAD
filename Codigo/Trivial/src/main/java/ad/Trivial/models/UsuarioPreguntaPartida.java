@@ -30,25 +30,25 @@ public class UsuarioPreguntaPartida {
     /**
      * Usuario que respondió la pregunta
      */
+    @Schema(description = "Usuario que respondió la pregunta")
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "usuario_id")
-    @Schema(description = "Usuario que respondió la pregunta")
     private Usuario usuario;
 
     /**
      * Pregunta que fue respondida
      */
+    @Schema(description = "Pregunta que fue respondida")
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "pregunta_id")
-    @Schema(description = "Pregunta que fue respondida")
     private Pregunta pregunta;
 
     /**
      * Partida en la que se respondió la pregunta
      */
+    @Schema(description = "Partida en la que se respondió la pregunta")
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "partida_id")
-    @Schema(description = "Partida en la que se respondió la pregunta")
     private Partida partida;
 
     public UsuarioPreguntaPartida() {

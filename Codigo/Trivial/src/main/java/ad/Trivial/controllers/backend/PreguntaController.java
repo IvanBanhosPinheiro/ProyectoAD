@@ -1,6 +1,7 @@
-package ad.Trivial.controllers;
+package ad.Trivial.controllers.backend;
 
 import ad.Trivial.models.Pregunta;
+import ad.Trivial.models.modelosDTO.PreguntasDTO;
 import ad.Trivial.services.Preguntaservice;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +19,11 @@ public class PreguntaController {
     public List<Pregunta> obtenerTodas(){
         return preguntaservice.obtenerTodas();
     }
+
+    /*@GetMapping("/{idcat}")
+    public  List<PreguntasDTO> obtenerPreguntasCategoria(@PathVariable Long id){
+        return preguntaservice.obtenerPreguntasDeCategoria(id);
+    }*/
 
     @PostMapping
     public Pregunta guardar(@RequestBody Pregunta pregunta){

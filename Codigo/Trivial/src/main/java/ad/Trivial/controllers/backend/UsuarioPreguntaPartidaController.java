@@ -1,6 +1,5 @@
-package ad.Trivial.controllers;
+package ad.Trivial.controllers.backend;
 
-import ad.Trivial.models.Categoria;
 import ad.Trivial.models.UsuarioPreguntaPartida;
 import ad.Trivial.services.UsuarioPreguntaPartidaService;
 import org.springframework.beans.factory.annotation.Autowired;
