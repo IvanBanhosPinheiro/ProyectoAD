@@ -17,6 +17,10 @@ public class CategoriaService {
         return categoriaRepository.findAll();
     }
 
+    public Categoria obtenerPorId(Long id){
+        return categoriaRepository.findById(id).orElse(null);
+    }
+
     public Categoria guardar(Categoria categoria){
         return categoriaRepository.save(categoria);
     }

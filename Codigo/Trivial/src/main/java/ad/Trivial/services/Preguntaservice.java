@@ -1,12 +1,19 @@
 package ad.Trivial.services;
 
+import ad.Trivial.models.Categoria;
 import ad.Trivial.models.Pregunta;
+import ad.Trivial.models.modelosDTO.PreguntaDTO;
 import ad.Trivial.models.modelosDTO.PreguntasDTO;
+import ad.Trivial.models.modelosDTO.RespuestaDTO;
 import ad.Trivial.repositories.PreguntaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @Service
 public class Preguntaservice {
@@ -14,31 +21,98 @@ public class Preguntaservice {
     @Autowired
     PreguntaRepository preguntaRepository;
 
-    public List<Pregunta> obtenerTodas(){
+    public List<Pregunta> obtenerTodas() {
         return preguntaRepository.findAll();
     }
-    public Pregunta guardar(Pregunta pregunta){
+
+    public Pregunta guardar(Pregunta pregunta) {
         return preguntaRepository.save(pregunta);
     }
 
-    public Pregunta actualizar(Pregunta pregunta){
-        if (pregunta.getId() == null){
+    public Pregunta actualizar(Pregunta pregunta) {
+        if (pregunta.getId() == null) {
             return null;
-        }else {
+        } else {
             return preguntaRepository.save(pregunta);
         }
     }
 
-    public void eliminar(Long id){
+    public void eliminar(Long id) {
         preguntaRepository.deleteById(id);
     }
 
-    /*public List<PreguntasDTO> obtenerPreguntasDeCategoria(Long id){
-        preguntaRepository.preguntasDeUnaCategoria(id).stream().map(fila->{
-            System.out.println(fila[0]);
-           return null;
-        });
-        return null;
-    }*/
+    //Este metodo solo devuelve preguntas con 4 respuestas solo ni 5 ni 3 solo con 4 todo mezclado
+    public PreguntasDTO obtenerPreguntasDeCategoria(Long id) {
+        PreguntasDTO preguntasDTO = new PreguntasDTO();
+
+        // Variables de control
+        AtomicBoolean catObtenida = new AtomicBoolean(false);
+        Long idPreguntaActual = null;
+        int contador = 0;
+
+        Categoria categoria = new Categoria();
+        List<PreguntaDTO> listaPreguntasDTO = new ArrayList<>();
+        List<RespuestaDTO> listaRespuestasDTO = new ArrayList<>();
+
+        for (Object[] fila : preguntaRepository.preguntasDeUnaCategoria(id)) {
+            // Obtener la categoría solo una vez
+            if (!catObtenida.get()) {
+                categoria.setId(((Number) fila[5]).longValue());
+                categoria.setNombre((String) fila[6]);
+                categoria.setDescripcion((String) fila[7]);
+                catObtenida.set(true);
+            }
+            if (contador == 0) {
+                idPreguntaActual = (Long) fila[3];
+            }
+
+            if (contador < 5 && idPreguntaActual.equals((Long) fila[3])) {
+                // Agregar respuesta
+                RespuestaDTO respuestaDTO = getRespuestaDTO(fila);
+                listaRespuestasDTO.add(respuestaDTO);
+                contador++;
+            } else {
+                listaRespuestasDTO.clear();
+                idPreguntaActual = (Long) fila[3];
+                contador = 0;
+                RespuestaDTO respuestaDTO = getRespuestaDTO(fila);
+                listaRespuestasDTO.add(respuestaDTO);
+                contador++;
+            }
+
+
+            // Si cambiamos de pregunta, validamos la anterior y la guardamos si tiene 4 respuestas
+            if (contador == 4 && idPreguntaActual.equals((Long) fila[3])) {
+                PreguntaDTO preguntaDTO = new PreguntaDTO();
+                preguntaDTO.setId(idPreguntaActual);
+                preguntaDTO.setPregunta((String) fila[4]);
+                Collections.shuffle(listaRespuestasDTO);
+                preguntaDTO.setRespuestas(new ArrayList<>(listaRespuestasDTO));
+                listaPreguntasDTO.add(preguntaDTO);// Reset para la nueva pregunta
+                listaRespuestasDTO = new ArrayList<>();
+                contador = 0;
+            }
+
+
+
+        }
+
+        // Asignar datos al DTO principal
+        preguntasDTO.setCategoria(categoria);
+        Collections.shuffle(listaPreguntasDTO);
+        preguntasDTO.setPreguntas(listaPreguntasDTO);
+
+        return preguntasDTO;
+    }
+
+    private static RespuestaDTO getRespuestaDTO(Object[] fila) {
+        // Agregar respuesta
+        RespuestaDTO respuestaDTO = new RespuestaDTO();
+        respuestaDTO.setId(((Number) fila[0]).longValue());
+        respuestaDTO.setRespuesta((String) fila[1]);
+        respuestaDTO.setCorrecta((Boolean) fila[2]);
+        return respuestaDTO;
+    }
+
 
 }

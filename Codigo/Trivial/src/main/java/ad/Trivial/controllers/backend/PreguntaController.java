@@ -20,10 +20,10 @@ public class PreguntaController {
         return preguntaservice.obtenerTodas();
     }
 
-    /*@GetMapping("/{idcat}")
-    public  List<PreguntasDTO> obtenerPreguntasCategoria(@PathVariable Long id){
-        return preguntaservice.obtenerPreguntasDeCategoria(id);
-    }*/
+    @GetMapping("/{idcat}")
+    public  PreguntasDTO obtenerPreguntasCategoria(@PathVariable Long idcat){
+        return preguntaservice.obtenerPreguntasDeCategoria(idcat);
+    }
 
     @PostMapping
     public Pregunta guardar(@RequestBody Pregunta pregunta){

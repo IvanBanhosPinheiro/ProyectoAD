@@ -7,6 +7,12 @@ public class PreguntaDTO {
     private String pregunta;
     private List<RespuestaDTO> respuestas;
 
+    public PreguntaDTO(Long id, String pregunta, List<RespuestaDTO> respuestas) {
+        this.id = id;
+        this.pregunta = pregunta;
+        this.respuestas = respuestas;
+    }
+
     public PreguntaDTO() {
     }
 
