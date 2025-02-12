@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/admin")
 public class AdminController {
 
-    @GetMapping("/dashboard")
+    @GetMapping({"/","/dashboard"})
     public String dashboard(Model model) {
         return "admin/dashboard"; // Vista en templates/admin/dashboard.html
     }

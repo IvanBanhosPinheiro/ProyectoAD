@@ -1123,7 +1123,7 @@ INSERT INTO respuesta (texto, es_correcta, pregunta_id) VALUES
 -- Simulación de una partida para el jugador con ID 2 (Jugador 1)
 SET @usuario_id = 2;
 -- Establecer la fecha de inicio
-SET @fecha_inicio = CURRENT_TIMESTAMP;
+SET @fecha_inicio = CURRENT_DATE();
 
 -- Calcular la fecha de fin añadiendo 20 minutos
 SET @fecha_fin = DATEADD(MINUTE, 20, @fecha_inicio);

@@ -85,16 +85,13 @@
                     <input type="hidden" th:field="*{id}">
                     <div class="mb-3">
                         <label for="nombre" class="form-label">Nombre:</label>
-                        <div class="row">
-                            <div class="col">
-                                <input type="text" th:field="*{nombre}" id="nombre" class="form-control"
+
+                        <input type="text" th:field="*{nombre}" id="nombre" class="form-control"
                                        placeholder="Ingrese el nombre" required>
-                            </div>
-                            <div class="col">
-                                <input type="text" th:field="*{descripcion}" id="descripcion" class="form-control"
-                                       placeholder="Ingrese la descripcion" required>
-                            </div>
-                        </div>
+                        <label for="nombre" class="form-label">Descripción:</label>
+                        <input type="text" th:field="*{descripcion}" id="descripcion" class="form-control"
+                                       placeholder="Ingrese la descripción" required>
+
 
 
                     </div>

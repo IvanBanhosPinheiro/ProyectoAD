@@ -17,6 +17,10 @@ public class PartidaService {
         return partidaRepository.findAll();
     }
 
+    public Partida obtenerPorID(Long id){
+        return partidaRepository.findById(id).orElse(null);
+    }
+
     public Partida guardar(Partida partida){
         return partidaRepository.save(partida);
     }

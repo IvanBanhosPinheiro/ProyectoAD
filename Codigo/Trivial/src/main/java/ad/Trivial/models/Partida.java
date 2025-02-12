@@ -2,6 +2,8 @@ package ad.Trivial.models;
 
 import jakarta.persistence.*;
 import io.swagger.v3.oas.annotations.media.Schema;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.util.Date;
 
 /**
@@ -23,15 +25,18 @@ public class Partida {
     /**
      * Fecha de inicio de la partida.
      */
-    @Schema(description = "Fecha de inicio de la partida.", example = "2023-10-01T12:00:00Z")
+    @Schema(description = "Fecha de inicio de la partida.", example = "2023-10-01")
     @Column(nullable = false)
+    @Temporal(TemporalType.DATE)
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date fechaInicio;
 
     /**
      * Fecha de finalización de la partida.
      */
-    @Schema(description = "Fecha de finalización de la partida.", example = "2023-10-01T12:30:00Z")
+    @Schema(description = "Fecha de finalización de la partida.", example = "2023-10-01")
     @Column
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date fechaFin;
 
     /**

@@ -37,8 +37,8 @@ CREATE TABLE IF NOT EXISTS respuesta (
 -- Crear la tabla partida
 CREATE TABLE  IF NOT EXISTS partida (
     id BIGINT PRIMARY KEY AUTO_INCREMENT,
-    fecha_inicio TIMESTAMP NOT NULL,
-    fecha_fin TIMESTAMP,
+    fecha_inicio DATE NOT NULL,
+    fecha_fin DATE,
     puntuacion INT,
     usuario_id BIGINT,
     FOREIGN KEY (usuario_id) REFERENCES usuario(id)
