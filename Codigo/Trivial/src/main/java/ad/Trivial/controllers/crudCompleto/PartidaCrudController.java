@@ -31,6 +31,6 @@ public class PartidaCrudController {
 
     @DeleteMapping("/{id}")
     public void borrar(@PathVariable Long id){
-        partidaService.eliminar(id);
+        partidaService.eliminarPorId(id);
     }
 }

@@ -47,7 +47,7 @@ public class PartidaController {
 
     @GetMapping("/delete/{id}")
     public String borrar(@PathVariable Long id){
-        partidaService.eliminar(id);
+        partidaService.eliminarPorId(id);
         return "redirect:/admin/partidas";
     }
 }

@@ -16,7 +16,7 @@ public class Pregunta {
     /**
      * Identificador único de la pregunta.
      */
-    @Schema(description = "Identificador único de la pregunta.", example = "1", accessMode = Schema.AccessMode.READ_ONLY)
+    @Schema(description = "Identificador único de la pregunta.", example = "1")
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -31,7 +31,7 @@ public class Pregunta {
     /**
      * Categoría a la que pertenece la pregunta.
      */
-    @Schema(description = "Categoría a la que pertenece la pregunta.", accessMode = Schema.AccessMode.READ_ONLY)
+    @Schema(description = "Categoría a la que pertenece la pregunta.")
     @ManyToOne
     @JoinColumn(name = "categoria_id", nullable = false)
     private Categoria categoria;

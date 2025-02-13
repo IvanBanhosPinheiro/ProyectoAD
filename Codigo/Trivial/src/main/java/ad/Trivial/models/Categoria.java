@@ -15,7 +15,7 @@ public class Categoria {
     /**
      * Identificador único de la categoría.
      */
-    @Schema(description = "Identificador único de la categoría.", example = "1", accessMode = Schema.AccessMode.READ_ONLY)
+    @Schema(description = "Identificador único de la categoría.", example = "1")
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

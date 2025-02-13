@@ -17,7 +17,7 @@ public class Partida {
     /**
      * Identificador único de la partida.
      */
-    @Schema(description = "Identificador único de la partida.", example = "1", accessMode = Schema.AccessMode.READ_ONLY)
+    @Schema(description = "Identificador único de la partida.", example = "1")
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -48,7 +48,7 @@ public class Partida {
     /**
      * Usuario que realizó la partida.
      */
-    @Schema(description = "Usuario que realizó la partida.", accessMode = Schema.AccessMode.READ_ONLY)
+    @Schema(description = "Usuario que realizó la partida.")
     @ManyToOne
     @JoinColumn(name = "usuario_id", nullable = false)
     private Usuario usuario;

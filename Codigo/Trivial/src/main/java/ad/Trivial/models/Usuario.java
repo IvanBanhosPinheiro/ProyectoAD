@@ -15,7 +15,7 @@ public class Usuario {
     /**
      * Identificador único del usuario.
      */
-    @Schema(description = "Identificador único del usuario.", example = "1", accessMode = Schema.AccessMode.READ_ONLY)
+    @Schema(description = "Identificador único del usuario.", example = "1")
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

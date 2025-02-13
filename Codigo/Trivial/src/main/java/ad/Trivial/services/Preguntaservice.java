@@ -5,6 +5,7 @@ import ad.Trivial.models.Pregunta;
 import ad.Trivial.models.modelosDTO.PreguntaDTO;
 import ad.Trivial.models.modelosDTO.PreguntasDTO;
 import ad.Trivial.models.modelosDTO.RespuestaDTO;
+import ad.Trivial.repositories.CategoriaRepository;
 import ad.Trivial.repositories.PreguntaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,6 +21,9 @@ public class Preguntaservice {
 
     @Autowired
     PreguntaRepository preguntaRepository;
+
+    @Autowired
+    CategoriaRepository categoriaRepository;
 
     public List<Pregunta> obtenerTodas() {
         return preguntaRepository.findAll();
@@ -39,6 +43,15 @@ public class Preguntaservice {
 
     public void eliminar(Long id) {
         preguntaRepository.deleteById(id);
+    }
+
+    public List<PreguntasDTO> obtenerTodasLasPreguntasDeTodasLasCategorias(){
+        List<Categoria> categorias = categoriaRepository.findAll();
+        List<PreguntasDTO> preguntasDTOS = new ArrayList<>();
+        for (Categoria categoria: categorias){
+            preguntasDTOS.add(obtenerPreguntasDeCategoria(categoria.getId()));
+        }
+        return preguntasDTOS;
     }
 
     //Este metodo solo devuelve preguntas con 4 respuestas solo ni 5 ni 3 solo con 4 todo mezclado
