@@ -3,6 +3,9 @@ package ad.Trivial.controllers.frontend;
 import ad.Trivial.models.Categoria;
 import ad.Trivial.services.CategoriaService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,7 +20,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/api/categorias")
-@Tag(name = "Categoria", description = "Operaciones relacionadas con las categorías")
+@Tag(name = "Api - Categoria", description = "Operaciones relacionadas con las categorías")
 public class CategoriaFrontController {
 
     @Autowired
@@ -29,6 +32,11 @@ public class CategoriaFrontController {
      * @return una lista de todas las categorías
      */
     @Operation(summary = "Obtener todas las categorías", description = "Retorna una lista de todas las categorías")
+    @ApiResponse(responseCode = "200", description = "Lista obtenida con éxito",
+            content = @Content(mediaType = "application/json",
+                    examples = @ExampleObject(value = """
+                            Ejemplo a Poñer
+                            """)))
     @GetMapping
     public List<Categoria> obtenerTodas(){
         return categoriaService.obtenerTodas();

@@ -3,6 +3,7 @@ package ad.Trivial.controllers.backend;
 import ad.Trivial.models.Pregunta;
 import ad.Trivial.models.modelosDTO.PreguntasDTO;
 import ad.Trivial.services.Preguntaservice;
+import io.swagger.v3.oas.annotations.Hidden;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -10,6 +11,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/admin/preguntas")
+@Hidden
 public class PreguntaController {
 
     @Autowired

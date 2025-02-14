@@ -4,6 +4,10 @@ import ad.Trivial.models.modelosDTO.PartidaDTO;
 import ad.Trivial.services.PartidaService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +21,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/api/partidas")
-@Tag(name = "Partida", description = "Operaciones relacionadas con las partidas")
+@Tag(name = "Api - Partida", description = "Operaciones relacionadas con las partidas")
 public class PartidaFrontController {
 
     @Autowired
@@ -29,6 +33,11 @@ public class PartidaFrontController {
      * @return una lista de todas las partidas
      */
     @Operation(summary = "Obtener todas las partidas", description = "Retorna una lista de todas las partidas")
+    @ApiResponse(responseCode = "200", description = "Lista obtenida con éxito",
+            content = @Content(mediaType = "application/json",
+                    examples = @ExampleObject(value = """
+                            Ejemplo a Poñer
+                            """)))
     @GetMapping
     public List<PartidaDTO> obtenerTodas(){
         return partidaService.obtenerTodasDTO();
@@ -41,6 +50,11 @@ public class PartidaFrontController {
      * @return la partida especificada por su ID
      */
     @Operation(summary = "Obtener una partida por ID", description = "Retorna una partida específica por su ID")
+    @ApiResponse(responseCode = "200", description = "Lista obtenida con éxito",
+            content = @Content(mediaType = "application/json",
+                    examples = @ExampleObject(value = """
+                            Ejemplo a Poñer
+                            """)))
     @GetMapping("/{id}")
     public PartidaDTO obtenerPorId(
             @Parameter(description = "ID de la partida", required = true) @PathVariable Long id){
@@ -54,9 +68,21 @@ public class PartidaFrontController {
      * @return la respuesta de la entidad guardada
      */
     @Operation(summary = "Guardar una nueva partida", description = "Guarda una nueva partida en el sistema")
+    @ApiResponse(responseCode = "200", description = "Lista obtenida con éxito",
+            content = @Content(mediaType = "application/json",
+                    examples = @ExampleObject(value = """
+                            Ejemplo a Poñer
+                            """)))
     @PostMapping
     public ResponseEntity<?> guardar(
-            @Parameter(description = "Datos de la partida a guardar", required = true) @RequestBody PartidaDTO partidaDTO){
+            @Parameter(description = "Datos de la partida a guardar", required = true,
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ad.Trivial.models.dto.AgregarPreguntaRequest.class),
+                            examples = @ExampleObject(value = """
+                                        {
+                                          Añadir
+                                        }
+                                        """))) @RequestBody PartidaDTO partidaDTO){
         return partidaService.guardarDTO(partidaDTO);
     }
 

@@ -2,6 +2,7 @@ package ad.Trivial.controllers.backend;
 
 import ad.Trivial.models.Respuesta;
 import ad.Trivial.services.RespuestaService;
+import io.swagger.v3.oas.annotations.Hidden;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -9,6 +10,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/admin/respuestas")
+@Hidden
 public class RespuestaController {
 
     @Autowired
