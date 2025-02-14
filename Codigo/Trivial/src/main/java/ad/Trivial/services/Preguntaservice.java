@@ -45,6 +45,22 @@ public class Preguntaservice {
         preguntaRepository.deleteById(id);
     }
 
+    public PreguntaDTO obtenerPreguntaDTOPorId(Long id){
+        List<PreguntasDTO> preguntasDTO = obtenerTodasLasPreguntasDeTodasLasCategorias();
+        for (PreguntasDTO preguntas : preguntasDTO){
+            for (PreguntaDTO pregunta : preguntas.getPreguntas()){
+                if (pregunta.getId().equals(id)){
+                    PreguntaDTO preguntaDTO = new PreguntaDTO();
+                    preguntaDTO.setId(pregunta.getId());
+                    preguntaDTO.setPregunta(pregunta.getPregunta());
+                    preguntaDTO.setRespuestas(pregunta.getRespuestas());
+                    return preguntaDTO;
+                }
+            }
+        }
+        return null;
+    }
+
     public List<PreguntasDTO> obtenerTodasLasPreguntasDeTodasLasCategorias(){
         List<Categoria> categorias = categoriaRepository.findAll();
         List<PreguntasDTO> preguntasDTOS = new ArrayList<>();

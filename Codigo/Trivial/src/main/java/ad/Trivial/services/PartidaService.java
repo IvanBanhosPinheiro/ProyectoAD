@@ -20,6 +20,8 @@ public class PartidaService {
     PartidaRepository partidaRepository;
     @Autowired
     UsuarioRepository usuarioRepository;
+    @Autowired
+    ConversionModelos conversionModelos;
 
     public List<Partida> obtenerTodas(){
         return partidaRepository.findAll();
@@ -55,52 +57,24 @@ public class PartidaService {
         List<Partida> partidas = partidaRepository.findAll();
         List<PartidaDTO> partidaDTOS =new ArrayList<>();
         for (Partida partida : partidas){
-            partidaDTOS.add(transformarPartidaADTO(partida));
+            partidaDTOS.add(conversionModelos.transformarPartidaADTO(partida));
         }
         return partidaDTOS;
     }
 
     public PartidaDTO obtenerPorIDDTO(Long id){
-        return transformarPartidaADTO(partidaRepository.findById(id).orElse(null));
+        return conversionModelos.transformarPartidaADTO(partidaRepository.findById(id).orElse(null));
     }
 
     public ResponseEntity<?> guardarDTO(PartidaDTO partidaDTO){
-        Partida partida = transformarDTOAPartida(partidaDTO);
+        Partida partida = conversionModelos.transformarDTOAPartida(partidaDTO);
         if (partida.getUsuario() == null){
             return ResponseEntity.status(422).body("Error: Datos inválidos, no se puede procesar");
         }else {
-            return ResponseEntity.ok(transformarPartidaADTO(partidaRepository.save(partida)));
+            return ResponseEntity.ok(conversionModelos.transformarPartidaADTO(partidaRepository.save(partida)));
         }
     }
 
 
-    //Convertir DTO a partida
-    private Partida transformarDTOAPartida(PartidaDTO partidaDTO){
-        Partida partida = new Partida();
-        partida.setId(partidaDTO.getId());
-        partida.setFechaFin(partidaDTO.getFechaFin());
-        partida.setFechaInicio(partidaDTO.getFechaInicio());
-        partida.setPuntuacion(partidaDTO.getPuntuacion());
-        partida.setUsuario(usuarioRepository.findById(partidaDTO.getUsuario().getId()).orElse(null));
-        return partida;
-    }
 
-    //Pasar una partida a DTO
-    private PartidaDTO transformarPartidaADTO(Partida partida){
-        if (partida != null) {
-            PartidaDTO partidaDTO = new PartidaDTO();
-            partidaDTO.setId(partida.getId());
-            partidaDTO.setFechaFin(partida.getFechaFin());
-            partidaDTO.setFechaInicio(partida.getFechaInicio());
-            partidaDTO.setPuntuacion(partida.getPuntuacion());
-            UsuariODTO usuariODTO = new UsuariODTO();
-            usuariODTO.setEmail(partida.getUsuario().getEmail());
-            usuariODTO.setNombre(partida.getUsuario().getNombre());
-            usuariODTO.setId(partida.getUsuario().getId());
-            partidaDTO.setUsuario(usuariODTO);
-            return partidaDTO;
-        }else{
-            return null;
-        }
-    }
 }

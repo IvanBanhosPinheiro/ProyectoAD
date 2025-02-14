@@ -8,5 +8,5 @@ import java.util.List;
 
 @Repository
 public interface UsuarioPreguntaPartidaRepository extends JpaRepository<UsuarioPreguntaPartida,Long> {
-
+    List<UsuarioPreguntaPartida> finfByUsuarioId(Long id);
 }
