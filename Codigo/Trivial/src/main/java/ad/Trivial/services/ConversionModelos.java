@@ -1,6 +1,7 @@
 package ad.Trivial.services;
 
 import ad.Trivial.models.Partida;
+import ad.Trivial.models.Pregunta;
 import ad.Trivial.models.Usuario;
 import ad.Trivial.models.UsuarioPreguntaPartida;
 import ad.Trivial.models.modelosDTO.PartidaDTO;
@@ -9,10 +10,12 @@ import ad.Trivial.models.modelosDTO.UsuariODTO;
 import ad.Trivial.models.modelosDTO.UsuarioPreguntaPartidaDTO;
 import ad.Trivial.repositories.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Service
 public class ConversionModelos {
     @Autowired
      private UsuarioRepository usuarioRepository;
@@ -72,7 +75,6 @@ public class ConversionModelos {
         partidaDTO.setFechaFin(usuarioPreguntaPartida.getPartida().getFechaFin());
         partidaDTO.setPuntuacion(usuarioPreguntaPartida.getPartida().getPuntuacion());
         // guardamos la relacion
-        usuarioPreguntaPartidaDTO.setUsuario(usuariODTO);
         usuarioPreguntaPartidaDTO.setPregunta(preguntaDTO);
         usuarioPreguntaPartidaDTO.setPartida(partidaDTO);
         usuarioPreguntaPartidaDTO.setAcertada(usuarioPreguntaPartida.isAcertada());
@@ -95,5 +97,14 @@ public class ConversionModelos {
         usuariODTO.setEmail(usuario.getEmail());
         usuariODTO.setNombre(usuario.getNombre());
         return usuariODTO;
+    }
+
+    //Convertir pregunta a DTO
+    public PreguntaDTO transformarPreguntaADTO(Pregunta pregunta){
+        PreguntaDTO preguntaDTO = new PreguntaDTO();
+        preguntaDTO.setId(pregunta.getId());
+        preguntaDTO.setPregunta(pregunta.getTexto());
+        preguntaDTO.setRespuestas(preguntaservice.obtenerPreguntaDTOPorId(pregunta.getId()).getRespuestas());
+        return preguntaDTO;
     }
 }

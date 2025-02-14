@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -84,17 +85,45 @@ public class UsuarioPreguntaPartidaService {
         }
     }
 
-    public ResponseEntity<?> obtenerTodasPorUsuario(Long id){
+    // Método público para obtener todas las preguntas de un usuario específico
+    public ResponseEntity<?> obtenerTodasPorUsuario(Long id) {
+        return obtenerTodasPor(id, true);
+    }
+
+    // Método público para obtener todas las preguntas de una partida específica
+    public ResponseEntity<?> obtenerTodasPorPartida(Long id) {
+        return obtenerTodasPor(id, false);
+    }
+
+    // Método privado que contiene la lógica común
+    private ResponseEntity<?> obtenerTodasPor(Long id, boolean esPorUsuario) {
         try {
-            List<UsuarioPreguntaPartida> usuarioPreguntaPartida = usuarioPreguntaPartidaRepository.finfByUsuarioId(id);
+            List<UsuarioPreguntaPartida> usuarioPreguntaPartida = esPorUsuario
+                    ? usuarioPreguntaPartidaRepository.findByUsuarioId(id)
+                    : usuarioPreguntaPartidaRepository.findByPartidaId(id);
+
             if (usuarioPreguntaPartida.isEmpty()) {
                 return ResponseEntity.status(404).body("No se encontraron registros");
             }
-            return ResponseEntity.ok(conversionModelos.transformarListaUsuarioPreguntaPartidaADTO(usuarioPreguntaPartida));
+
+            UsuarioPreguntaPartidaDTOList usuarioPreguntaPartidaDTOList = new UsuarioPreguntaPartidaDTOList();
+            usuarioPreguntaPartidaDTOList.setPartida(conversionModelos.transformarPartidaADTO(usuarioPreguntaPartida.get(0).getPartida()));
+
+            List<RespuestasDTO> respuestas = new ArrayList<>();
+            for (UsuarioPreguntaPartida upp : usuarioPreguntaPartida) {
+                RespuestasDTO respuestasDTO = new RespuestasDTO();
+                respuestasDTO.setAcertada(upp.isAcertada());
+                respuestasDTO.setPregunta(conversionModelos.transformarPreguntaADTO(upp.getPregunta()));
+                respuestas.add(respuestasDTO);
+            }
+            usuarioPreguntaPartidaDTOList.setRespuestas(respuestas);
+            return ResponseEntity.ok(usuarioPreguntaPartidaDTOList);
         } catch (Exception e) {
             return ResponseEntity.status(500).body("Error interno del servidor");
         }
     }
+
+
 }
 
 

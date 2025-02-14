@@ -34,21 +34,28 @@ public class UsuarioPreguntaPartidaFrontController {
     }
 
     /**
+     * Obtiene todas las preguntas de una partida específica.
+     *
+     * @param id el ID de la partida
+     * @return una respuesta con todas las preguntas asociadas a la partida
+     */
+    @GetMapping("/partida/{id}")
+    public ResponseEntity<?> obtenerDeUnaPartida(
+            @Parameter(description = "ID de la partida", required = true) @PathVariable Long id) {
+        return usuarioPreguntaPartidaService.obtenerTodasPorPartida(id);
+    }
+
+    /**
      * Agrega una pregunta a una partida específica.
      *
-     * @param partidaId el ID de la partida
-     * @param preguntaId el ID de la pregunta
-     * @param usuarioId el ID del usuario
-     * @param acertada indica si la pregunta fue acertada
+     * @param request objeto que contiene los datos necesarios para agregar la pregunta a la partida
      * @return una respuesta con el resultado de la operación
      */
     @Operation(summary = "Agregar preguntas a una partida", description = "Agrega una pregunta a una partida específica")
     @PostMapping("/partida")
     public ResponseEntity<?> agregarPreguntasAPartida(
-            @Parameter(description = "ID de la partida", required = true) @RequestBody Long partidaId,
-            @Parameter(description = "ID de la pregunta", required = true) @RequestBody Long preguntaId,
-            @Parameter(description = "ID del usuario", required = true) @RequestParam Long usuarioId,
-            @Parameter(description = "Indica si la pregunta fue acertada", required = true) @RequestParam boolean acertada) {
-        return usuarioPreguntaPartidaService.agregarPreguntasAPartida(partidaId, preguntaId, usuarioId, acertada);
+            @RequestBody ad.Trivial.models.dto.AgregarPreguntaRequest request) {
+        return usuarioPreguntaPartidaService.agregarPreguntasAPartida(
+                request.getPartidaId(), request.getPreguntaId(), request.getUsuarioId(), request.isAcertada());
     }
 }

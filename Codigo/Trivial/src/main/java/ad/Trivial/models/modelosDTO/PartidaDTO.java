@@ -1,10 +1,16 @@
 package ad.Trivial.models.modelosDTO;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.util.Date;
 
 public class PartidaDTO {
     private Long id;
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private Date fechaInicio;
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private Date fechaFin;
     private UsuariODTO usuario;
     private Integer puntuacion;

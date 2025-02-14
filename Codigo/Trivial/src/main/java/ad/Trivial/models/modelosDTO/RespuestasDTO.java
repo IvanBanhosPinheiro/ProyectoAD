@@ -1,20 +1,10 @@
 package ad.Trivial.models.modelosDTO;
 
-public class UsuarioPreguntaPartidaDTO {
-
-    private PartidaDTO partida;
+public class RespuestasDTO {
     private boolean acertada;
     private PreguntaDTO pregunta;
 
-    public UsuarioPreguntaPartidaDTO() {
-    }
-
-    public PartidaDTO getPartida() {
-        return partida;
-    }
-
-    public void setPartida(PartidaDTO partida) {
-        this.partida = partida;
+    public RespuestasDTO() {
     }
 
     public boolean isAcertada() {

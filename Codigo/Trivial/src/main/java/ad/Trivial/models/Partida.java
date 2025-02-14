@@ -3,6 +3,7 @@ package ad.Trivial.models;
 import jakarta.persistence.*;
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.springframework.format.annotation.DateTimeFormat;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.util.Date;
 
@@ -29,6 +30,7 @@ public class Partida {
     @Column(nullable = false)
     @Temporal(TemporalType.DATE)
     @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private Date fechaInicio;
 
     /**
@@ -37,6 +39,7 @@ public class Partida {
     @Schema(description = "Fecha de finalización de la partida.", example = "2023-10-01")
     @Column
     @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private Date fechaFin;
 
     /**
@@ -52,7 +55,6 @@ public class Partida {
     @ManyToOne
     @JoinColumn(name = "usuario_id", nullable = false)
     private Usuario usuario;
-
 
     public Partida() {
     }
@@ -96,5 +98,4 @@ public class Partida {
     public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
     }
-
 }

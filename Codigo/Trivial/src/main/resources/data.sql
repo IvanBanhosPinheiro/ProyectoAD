@@ -1127,7 +1127,7 @@ SET @usuario_id = 2;
 SET @fecha_inicio = CURRENT_DATE();
 
 -- Calcular la fecha de fin añadiendo 20 minutos
-SET @fecha_fin = DATEADD(MINUTE, 20, @fecha_inicio);
+SET @fecha_fin = CURRENT_DATE();
 
 -- Suponiendo que el jugador respondió correctamente 15 preguntas
 SET @puntuacion = 15;

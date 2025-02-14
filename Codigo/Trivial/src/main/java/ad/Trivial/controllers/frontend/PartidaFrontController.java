@@ -60,15 +60,4 @@ public class PartidaFrontController {
         return partidaService.guardarDTO(partidaDTO);
     }
 
-    /**
-     * Elimina una partida por su ID.
-     *
-     * @param id el ID de la partida a eliminar
-     */
-    @Operation(summary = "Eliminar una partida por ID", description = "Elimina una partida específica por su ID")
-    @DeleteMapping("/{id}")
-    public void eliminar(
-            @Parameter(description = "ID de la partida a eliminar", required = true) @PathVariable Long id){
-        partidaService.eliminarPorId(id);
-    }
 }
