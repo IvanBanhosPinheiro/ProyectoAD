@@ -1,38 +1,70 @@
 package ad.Trivial.controllers.backend;
 
 import ad.Trivial.models.Usuario;
+import ad.Trivial.services.PartidaService;
+import ad.Trivial.services.UsuarioPreguntaPartidaService;
 import ad.Trivial.services.UsuarioService;
 import io.swagger.v3.oas.annotations.Hidden;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController
+@Controller
 @RequestMapping("/admin/usuarios")
 @Hidden
 public class UsuarioController {
 
     @Autowired
     UsuarioService usuarioService;
+    @Autowired
+    PartidaService partidaService;
+    @Autowired
+    UsuarioPreguntaPartidaService usuarioPreguntaPartidaService;
 
     @GetMapping
-    public List<Usuario> obtenerTodos(){
-        return usuarioService.obtenerTodas();
+    public String obtenerTodos(Model model){
+        List<Usuario> usuarios = usuarioService.obtenerTodas();
+        model.addAttribute("usuarios", usuarios);
+        if (!model.containsAttribute("usuario")) {
+            model.addAttribute("usuario", new Usuario());
+        }
+        return "admin/usuarios";
     }
 
-    @PostMapping
-    public Usuario guardar(@RequestBody Usuario usuario){
-        return usuarioService.guardar(usuario);
+    @GetMapping("/edit/{id}")
+    public String editUsuario(@PathVariable Long id, Model model) {
+        Usuario usuario = usuarioService.obtenerPorIdAdmin(id);
+        if (usuario != null) {
+            model.addAttribute("usuario", usuario);
+        } else {
+            model.addAttribute("usuario", new Usuario());
+        }
+        model.addAttribute("usuarios", usuarioService.obtenerTodas());
+        return "admin/usuarios";
     }
 
-    @PutMapping
-    public Usuario actualizar(@RequestBody Usuario usuario){
-        return usuarioService.actualizar(usuario);
+    @PostMapping("/save")
+    public String guardar(@ModelAttribute Usuario usuario){
+        usuarioService.guardar(usuario);
+        return "redirect:/admin/usuarios";
     }
 
-    @DeleteMapping("/{id}")
-    public void borrar(@PathVariable Long id){
-        usuarioService.eliminar(id);
+    @GetMapping("/delete/{id}")
+    public String borrar(@PathVariable Long id) {
+        try {
+            usuarioPreguntaPartidaService.eliminarTodosPorUsuarioID(id);
+
+            partidaService.eliminarPorUsuarioID(id);
+
+            usuarioService.eliminar(id);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "redirect:/admin/usuarios?error=usuario";
+        }
+
+        return "redirect:/admin/usuarios";
     }
 }

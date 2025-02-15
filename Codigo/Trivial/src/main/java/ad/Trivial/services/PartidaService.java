@@ -6,6 +6,7 @@ import ad.Trivial.models.modelosDTO.PartidaDTO;
 import ad.Trivial.models.modelosDTO.UsuariODTO;
 import ad.Trivial.repositories.PartidaRepository;
 import ad.Trivial.repositories.UsuarioRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -60,6 +61,11 @@ public class PartidaService {
             partidaDTOS.add(conversionModelos.transformarPartidaADTO(partida));
         }
         return partidaDTOS;
+    }
+
+    @Transactional
+    public void eliminarPorUsuarioID(Long id){
+        partidaRepository.deleteAllByUsuarioId(id);
     }
 
     public PartidaDTO obtenerPorIDDTO(Long id){

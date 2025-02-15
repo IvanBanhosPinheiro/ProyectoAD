@@ -9,6 +9,7 @@ import ad.Trivial.repositories.PartidaRepository;
 import ad.Trivial.repositories.PreguntaRepository;
 import ad.Trivial.repositories.UsuarioPreguntaPartidaRepository;
 import ad.Trivial.repositories.UsuarioRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -84,6 +85,14 @@ public class UsuarioPreguntaPartidaService {
             return ResponseEntity.status(500).body("Error interno del servidor");
         }
     }
+    public void eliminarTodoPorPartidaID(Long id){
+        usuarioPreguntaPartidaRepository.deleteAllByPartidaId(id);
+    }
+
+    @Transactional
+    public void eliminarTodosPorUsuarioID(Long id){
+        usuarioPreguntaPartidaRepository.deleteAllByUsuarioId(id);
+    }
 
     // Método público para obtener todas las preguntas de un usuario específico
     public ResponseEntity<?> obtenerTodasPorUsuario(Long id) {
@@ -95,6 +104,10 @@ public class UsuarioPreguntaPartidaService {
         return obtenerTodasPor(id, false);
     }
 
+    @Transactional
+    public void eliminarTodasLasPreguntasDeUnaPregunta(Long id){
+        usuarioPreguntaPartidaRepository.deleteAllByPreguntaId(id);
+    }
     // Método privado que contiene la lógica común
     private ResponseEntity<?> obtenerTodasPor(Long id, boolean esPorUsuario) {
         try {

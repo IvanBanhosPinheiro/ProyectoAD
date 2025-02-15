@@ -27,4 +27,8 @@ public class PreguntasDTO {
     public void setPreguntas(List<PreguntaDTO> preguntas) {
         this.preguntas = preguntas;
     }
+
+    public void addPregunta(List<PreguntaDTO> preguntas){
+        this.preguntas.addAll(preguntas);
+    }
 }

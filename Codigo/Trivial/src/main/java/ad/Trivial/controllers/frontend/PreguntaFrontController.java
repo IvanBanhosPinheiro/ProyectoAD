@@ -40,7 +40,7 @@ public class PreguntaFrontController {
                             """)))
     @GetMapping
     public List<PreguntasDTO> obtenerTodas() {
-        return preguntaservice.obtenerTodasLasPreguntasDeTodasLasCategorias();
+        return preguntaservice.obtenerTodasLasPreguntasDeTodasLasCategorias(true);
     }
 
     /**
@@ -61,7 +61,7 @@ public class PreguntaFrontController {
             @Parameter(description = "ID de la categoría", required = true) @PathVariable Long id,
             @Parameter(description = "Número de preguntas a retornar", required = false) @RequestParam(name = "numero", required = false) Integer cantidad) {
         if (cantidad != null) {
-            PreguntasDTO preguntasDTO = preguntaservice.obtenerPreguntasDeCategoria(id);
+            PreguntasDTO preguntasDTO = preguntaservice.obtenerPreguntasDeCategoria(id,true);
 
             if (cantidad > preguntasDTO.getPreguntas().size()) {
                 return ResponseEntity.status(400).body("Error: La solicitud es inválida");
@@ -70,7 +70,7 @@ public class PreguntaFrontController {
                 return ResponseEntity.ok(preguntasDTO);
             }
         } else {
-            return ResponseEntity.ok(preguntaservice.obtenerPreguntasDeCategoria(id));
+            return ResponseEntity.ok(preguntaservice.obtenerPreguntasDeCategoria(id,true));
         }
     }
 }

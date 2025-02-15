@@ -36,6 +36,10 @@ public class UsuarioService {
         usuarioRepository.deleteById(id);
     }
 
+    public Usuario obtenerPorIdAdmin(Long id){
+        return usuarioRepository.findById(id).orElse(null);
+    }
+
     //Parte DTOs
     public ResponseEntity<?> obtenerPorId(Long id){
         Usuario usuario = usuarioRepository.findById(id).orElse(null);

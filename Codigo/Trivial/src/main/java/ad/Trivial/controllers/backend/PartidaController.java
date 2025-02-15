@@ -3,6 +3,7 @@ package ad.Trivial.controllers.backend;
 import ad.Trivial.models.Categoria;
 import ad.Trivial.models.Partida;
 import ad.Trivial.services.PartidaService;
+import ad.Trivial.services.UsuarioPreguntaPartidaService;
 import io.swagger.v3.oas.annotations.Hidden;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -18,6 +19,8 @@ public class PartidaController {
 
     @Autowired
     PartidaService partidaService;
+    @Autowired
+    UsuarioPreguntaPartidaService usuarioPreguntaPartidaService;
 
     @GetMapping
     public String  obtenerTodas(Model model){
@@ -33,7 +36,7 @@ public class PartidaController {
     @GetMapping("/edit/{id}")
     public String editCategoria(@PathVariable Long id, Model model) {
         Partida partida = partidaService.obtenerPorID(id);
-        System.out.println(partida.getId());
+
         model.addAttribute("partida", partida);
         model.addAttribute("partidas", partidaService.obtenerTodas());
         return "admin/partidas";
@@ -49,7 +52,13 @@ public class PartidaController {
 
     @GetMapping("/delete/{id}")
     public String borrar(@PathVariable Long id){
-        partidaService.eliminarPorId(id);
+        try {
+            usuarioPreguntaPartidaService.eliminarTodoPorPartidaID(id);
+            partidaService.eliminarPorId(id);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "redirect:/admin/partidas";
+        }
         return "redirect:/admin/partidas";
     }
 }

@@ -7,6 +7,7 @@ import ad.Trivial.models.modelosDTO.PreguntasDTO;
 import ad.Trivial.models.modelosDTO.RespuestaDTO;
 import ad.Trivial.repositories.CategoriaRepository;
 import ad.Trivial.repositories.PreguntaRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,7 +15,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 
 @Service
 public class Preguntaservice {
@@ -46,7 +47,7 @@ public class Preguntaservice {
     }
 
     public PreguntaDTO obtenerPreguntaDTOPorId(Long id){
-        List<PreguntasDTO> preguntasDTO = obtenerTodasLasPreguntasDeTodasLasCategorias();
+        List<PreguntasDTO> preguntasDTO = obtenerTodasLasPreguntasDeTodasLasCategorias(false);
         for (PreguntasDTO preguntas : preguntasDTO){
             for (PreguntaDTO pregunta : preguntas.getPreguntas()){
                 if (pregunta.getId().equals(id)){
@@ -61,17 +62,43 @@ public class Preguntaservice {
         return null;
     }
 
-    public List<PreguntasDTO> obtenerTodasLasPreguntasDeTodasLasCategorias(){
+    public List<Pregunta> obtenerPreguntasPorCategoria(Long id){
+        return preguntaRepository.findByCategoriaId(id);
+    }
+
+    public Categoria obtenerCategoriaDeUnaPregunta(Long idPregunta){
+        AtomicReference<Categoria> categoria = new AtomicReference<>(new Categoria());
+        obtenerTodasLasPreguntasDeTodasLasCategorias(false).forEach(preguntasDTO -> {
+            preguntasDTO.getPreguntas().forEach(preguntaDTO -> {
+                if (preguntaDTO.getId().equals(idPregunta)){
+                    categoria.set(preguntasDTO.getCategoria());
+                }
+            });
+        });
+        return categoria.get();
+    }
+
+    @Transactional
+    public void eliminarTodasLasPreguntasDeUnaCategoria(Long id){
+        preguntaRepository.deleteAllByCategoriaId(id);
+    }
+
+    public Pregunta obtenerLaUltimaPregunta(){
+        return preguntaRepository.findLastPregunta();
+    }
+
+    public List<PreguntasDTO> obtenerTodasLasPreguntasDeTodasLasCategorias(boolean mezclar){
         List<Categoria> categorias = categoriaRepository.findAll();
+        List<PreguntaDTO> preguntasDTO = new ArrayList<>();
         List<PreguntasDTO> preguntasDTOS = new ArrayList<>();
         for (Categoria categoria: categorias){
-            preguntasDTOS.add(obtenerPreguntasDeCategoria(categoria.getId()));
+            preguntasDTOS.add(obtenerPreguntasDeCategoria(categoria.getId(),mezclar));
         }
         return preguntasDTOS;
     }
 
     //Este metodo solo devuelve preguntas con 4 respuestas solo ni 5 ni 3 solo con 4 todo mezclado
-    public PreguntasDTO obtenerPreguntasDeCategoria(Long id) {
+    public PreguntasDTO obtenerPreguntasDeCategoria(Long id, boolean mezclar){
         PreguntasDTO preguntasDTO = new PreguntasDTO();
 
         // Variables de control
@@ -115,7 +142,9 @@ public class Preguntaservice {
                 PreguntaDTO preguntaDTO = new PreguntaDTO();
                 preguntaDTO.setId(idPreguntaActual);
                 preguntaDTO.setPregunta((String) fila[4]);
-                Collections.shuffle(listaRespuestasDTO);
+                if (mezclar) {
+                    Collections.shuffle(listaRespuestasDTO);
+                }
                 preguntaDTO.setRespuestas(new ArrayList<>(listaRespuestasDTO));
                 listaPreguntasDTO.add(preguntaDTO);// Reset para la nueva pregunta
                 listaRespuestasDTO = new ArrayList<>();
@@ -128,7 +157,9 @@ public class Preguntaservice {
 
         // Asignar datos al DTO principal
         preguntasDTO.setCategoria(categoria);
-        Collections.shuffle(listaPreguntasDTO);
+        if (mezclar) {
+            Collections.shuffle(listaPreguntasDTO);
+        }
         preguntasDTO.setPreguntas(listaPreguntasDTO);
 
         return preguntasDTO;

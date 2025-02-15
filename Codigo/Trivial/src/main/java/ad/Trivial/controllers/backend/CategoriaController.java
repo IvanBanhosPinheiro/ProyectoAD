@@ -2,6 +2,9 @@ package ad.Trivial.controllers.backend;
 
 import ad.Trivial.models.Categoria;
 import ad.Trivial.services.CategoriaService;
+import ad.Trivial.services.Preguntaservice;
+import ad.Trivial.services.RespuestaService;
+import ad.Trivial.services.UsuarioPreguntaPartidaService;
 import io.swagger.v3.oas.annotations.Hidden;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,8 +20,17 @@ public class CategoriaController {
     @Autowired
     CategoriaService categoriaService;
 
+    @Autowired
+    Preguntaservice preguntaservice;
+
+    @Autowired
+    RespuestaService respuestaService;
+
+    @Autowired
+    UsuarioPreguntaPartidaService usuarioPreguntaPartidaService;
+
     @GetMapping
-    public String obtenerTodas(Model model){
+    public String obtenerTodas(Model model) {
         model.addAttribute("categorias", categoriaService.obtenerTodas());
         // Si no se ha pasado un objeto "categoria", se crea uno vacío para el formulario
         if (!model.containsAttribute("categoria")) {
@@ -38,15 +50,26 @@ public class CategoriaController {
 
 
     @PostMapping("/save")
-    public String guardar(@ModelAttribute Categoria categoria){
+    public String guardar(@ModelAttribute Categoria categoria) {
         categoriaService.guardar(categoria);
         return "redirect:/admin/categorias";
     }
 
 
     @GetMapping("/delete/{id}")
-    public String borrar(@PathVariable Long id){
-        categoriaService.eliminar(id);
+    public String borrar(@PathVariable Long id) {
+        try {
+            preguntaservice.obtenerPreguntasDeCategoria(id, false).getPreguntas().forEach(pregunta -> {
+                respuestaService.eliminarTodasLasRespuestasDeUnaPregunta(pregunta.getId());
+                usuarioPreguntaPartidaService.eliminarTodasLasPreguntasDeUnaPregunta(pregunta.getId());
+            });
+            preguntaservice.eliminarTodasLasPreguntasDeUnaCategoria(id);
+            categoriaService.eliminar(id);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "redirect:/admin/categorias";
+        }
+
         return "redirect:/admin/categorias";
     }
 }

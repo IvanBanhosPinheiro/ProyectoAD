@@ -2,6 +2,7 @@ package ad.Trivial.services;
 
 import ad.Trivial.models.Respuesta;
 import ad.Trivial.repositories.RespuestaRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,6 +28,11 @@ public class RespuestaService {
         }else {
             return respuestaRepository.save(respuesta);
         }
+    }
+
+    @Transactional
+    public void eliminarTodasLasRespuestasDeUnaPregunta(Long id){
+        respuestaRepository.deleteAllByPreguntaId(id);
     }
 
     public void eliminar(Long id){

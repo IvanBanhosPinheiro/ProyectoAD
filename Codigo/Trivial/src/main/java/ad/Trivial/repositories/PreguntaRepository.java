@@ -15,4 +15,12 @@ public interface PreguntaRepository extends JpaRepository<Pregunta, Long> {
             "JOIN categoria AS c ON p.categoria_id = c.id\n" +
             "WHERE c.id = ?1; ", nativeQuery = true)
     List<Object[]> preguntasDeUnaCategoria(Long categoria_id);
+
+    void deleteAllByCategoriaId(Long id);
+
+    // Método para obtener la última pregunta
+    @Query(value = "SELECT * FROM pregunta ORDER BY id DESC LIMIT 1", nativeQuery = true)
+    Pregunta findLastPregunta();
+
+    List<Pregunta> findByCategoriaId(Long id);
 }

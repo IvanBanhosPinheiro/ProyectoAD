@@ -103,7 +103,7 @@ public class PreguntaCrudController {
     public PreguntasDTO obtenerPreguntasCategoria(
             @Parameter(description = "ID de la categoría", required = true) @PathVariable Long idcat){
         // Llama al servicio para obtener preguntas de una categoría específica
-        return preguntaservice.obtenerPreguntasDeCategoria(idcat);
+        return preguntaservice.obtenerPreguntasDeCategoria(idcat,true);
     }
 
     /**

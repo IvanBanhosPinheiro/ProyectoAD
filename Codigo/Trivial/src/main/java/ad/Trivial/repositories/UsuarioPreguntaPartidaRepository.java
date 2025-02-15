@@ -10,4 +10,7 @@ import java.util.List;
 public interface UsuarioPreguntaPartidaRepository extends JpaRepository<UsuarioPreguntaPartida,Long> {
     List<UsuarioPreguntaPartida> findByUsuarioId(Long id);
     List<UsuarioPreguntaPartida> findByPartidaId(Long id);
+    void deleteAllByPreguntaId(Long id);
+    void deleteAllByUsuarioId(Long id);
+    void deleteAllByPartidaId(Long id);
 }
