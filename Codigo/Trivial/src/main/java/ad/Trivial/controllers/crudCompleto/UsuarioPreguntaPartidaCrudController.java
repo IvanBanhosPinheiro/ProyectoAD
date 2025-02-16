@@ -1,7 +1,11 @@
 package ad.Trivial.controllers.crudCompleto;
 
+import ad.Trivial.models.Pregunta;
+import ad.Trivial.models.Usuario;
 import ad.Trivial.models.UsuarioPreguntaPartida;
+import ad.Trivial.services.Preguntaservice;
 import ad.Trivial.services.UsuarioPreguntaPartidaService;
+import ad.Trivial.services.UsuarioService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -10,6 +14,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,7 +29,11 @@ import java.util.List;
 public class UsuarioPreguntaPartidaCrudController {
 
     @Autowired
-    UsuarioPreguntaPartidaService usuarioPreguntaPartidaService;
+    private UsuarioPreguntaPartidaService usuarioPreguntaPartidaService;
+    @Autowired
+    private Preguntaservice preguntaservice;
+    @Autowired
+    private UsuarioService usuarioService;
 
     /**
      * Obtiene todas las relaciones UsuarioPreguntaPartida.
@@ -37,10 +46,37 @@ public class UsuarioPreguntaPartidaCrudController {
                     examples = @ExampleObject(value = """
                             [
                               {
-                                "partidaId": 1,
-                                "preguntaId": 2,
-                                "usuarioId": 3,
-                                "acertada": true
+                                  "id": 1,
+                                  "acertada": true,
+                                  "usuario": {
+                                      "id": 2,
+                                      "nombre": "Jugador 1",
+                                      "email": "jugador1@ejemplo.com",
+                                      "contraseña": "contraseña_segura",
+                                      "rol": "usuario"
+                                  },
+                                  "pregunta": {
+                                      "id": 1,
+                                      "texto": "¿Quién es el máximo goleador histórico de la NBA?",
+                                      "categoria": {
+                                          "id": 4,
+                                          "nombre": "Deportes",
+                                          "descripcion": "Preguntas sobre deportes y atletas famosos."
+                                      }
+                                  },
+                                  "partida": {
+                                      "id": 1,
+                                      "fechaInicio": "2025-02-14",
+                                      "fechaFin": "2025-02-14",
+                                      "puntuacion": 15,
+                                      "usuario": {
+                                          "id": 2,
+                                          "nombre": "Jugador 1",
+                                          "email": "jugador1@ejemplo.com",
+                                          "contraseña": "contraseña_segura",
+                                          "rol": "usuario"
+                                      }
+                                  }
                               }
                             ]
                             """)))
@@ -60,23 +96,68 @@ public class UsuarioPreguntaPartidaCrudController {
             content = @Content(mediaType = "application/json",
                     examples = @ExampleObject(value = """
                             {
-                              "partidaId": 1,
-                              "preguntaId": 2,
-                              "usuarioId": 3,
-                              "acertada": true
+                                "id": 23,
+                                "acertada": true,
+                                "usuario": {
+                                    "id": 2,
+                                    "nombre": "Jugador 1",
+                                    "email": "jugador1@ejemplo.com",
+                                    "contraseña": "contraseña_segura",
+                                    "rol": "usuario"
+                                },
+                                "pregunta": {
+                                    "id": 1,
+                                    "texto": "¿Quién es el máximo goleador histórico de la NBA?",
+                                    "categoria": {
+                                        "id": 4,
+                                        "nombre": "Deportes",
+                                        "descripcion": "Preguntas sobre deportes y atletas famosos."
+                                    }
+                                },
+                                "partida": {
+                                    "id": 1,
+                                    "fechaInicio": "2025-02-14",
+                                    "fechaFin": "2025-02-14",
+                                    "puntuacion": null,
+                                    "usuario": null
+                                }
                             }
                             """)))
     @PostMapping
-    public UsuarioPreguntaPartida guardar(
+    public ResponseEntity<UsuarioPreguntaPartida> guardar(
             @Parameter(description = "Datos de la relación UsuarioPreguntaPartida a guardar", required = true,
                     content = @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = ad.Trivial.models.dto.AgregarPreguntaRequest.class),
+                            schema = @Schema(implementation = UsuarioPreguntaPartida.class),
                             examples = @ExampleObject(value = """
-                                        {
-                                          Añadir
+                                    {
+                                        "acertada": true,
+                                        "usuario": {
+                                            "id": 2
+                                        },
+                                        "pregunta": {
+                                            "id": 1
+                                        },
+                                        "partida": {
+                                            "id": 1,
+                                            "fechaInicio": "2025-02-14",
+                                            "fechaFin": "2025-02-14"
                                         }
+                                    }
                                         """))) @RequestBody UsuarioPreguntaPartida usuarioPreguntaPartida){
-        return usuarioPreguntaPartidaService.guardar(usuarioPreguntaPartida);
+        Pregunta pregunta = preguntaservice.obtenerPorId(usuarioPreguntaPartida.getPregunta().getId());
+        if (pregunta == null) {
+            return ResponseEntity.badRequest().build();
+        }
+        Usuario usuario = usuarioService.obtenerPorId(usuarioPreguntaPartida.getUsuario().getId());
+        if (usuario == null) {
+            return ResponseEntity.badRequest().build();
+        }
+        if (usuarioPreguntaPartida.getPartida().getFechaInicio() ==null){
+            return ResponseEntity.badRequest().build();
+        }
+        usuarioPreguntaPartida.setPregunta(pregunta);
+        usuarioPreguntaPartida.setUsuario(usuario);
+        return ResponseEntity.ok(usuarioPreguntaPartidaService.guardar(usuarioPreguntaPartida));
     }
 
     /**
@@ -90,21 +171,60 @@ public class UsuarioPreguntaPartidaCrudController {
             content = @Content(mediaType = "application/json",
                     examples = @ExampleObject(value = """
                             {
-                              "partidaId": 1,
-                              "preguntaId": 2,
-                              "usuarioId": 3,
-                              "acertada": true
+                                "id": 23,
+                                "acertada": false,
+                                "usuario": {
+                                    "id": 2,
+                                    "nombre": "Jugador 1",
+                                    "email": "jugador1@ejemplo.com",
+                                    "contraseña": "contraseña_segura",
+                                    "rol": "usuario"
+                                },
+                                "pregunta": {
+                                    "id": 1,
+                                    "texto": "¿Quién es el máximo goleador histórico de la NBA?",
+                                    "categoria": {
+                                        "id": 4,
+                                        "nombre": "Deportes",
+                                        "descripcion": "Preguntas sobre deportes y atletas famosos."
+                                    }
+                                },
+                                "partida": {
+                                    "id": 1,
+                                    "fechaInicio": "2025-02-14",
+                                    "fechaFin": "2025-02-14",
+                                    "puntuacion": 15,
+                                    "usuario": {
+                                        "id": 2,
+                                        "nombre": "Jugador 1",
+                                        "email": "jugador1@ejemplo.com",
+                                        "contraseña": "contraseña_segura",
+                                        "rol": "usuario"
+                                    }
+                                }
                             }
                             """)))
     @PutMapping
     public UsuarioPreguntaPartida actualizar(
             @Parameter(description = "Datos de la relación UsuarioPreguntaPartida a actualizar", required = true,
                     content = @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = ad.Trivial.models.dto.AgregarPreguntaRequest.class),
+                            schema = @Schema(implementation = UsuarioPreguntaPartida.class),
                             examples = @ExampleObject(value = """
-                                        {
-                                          Añadir
+                                    {
+                                        "id":23,
+                                        "acertada": false,
+                                        "usuario": {
+                                            "id": 2
+                                        },
+                                        "pregunta": {
+                                            "id": 1
+                                        },
+                                        "partida": {
+                                            "id": 1,
+                                            "fechaInicio": "2025-02-14",
+                                            "fechaFin": "2025-02-15"
                                         }
+                                    }
                                         """))) @RequestBody UsuarioPreguntaPartida usuarioPreguntaPartida){
         return usuarioPreguntaPartidaService.actualizar(usuarioPreguntaPartida);
     }

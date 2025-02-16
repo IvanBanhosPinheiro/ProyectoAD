@@ -25,11 +25,11 @@ import java.util.List;
 public class PreguntaController {
 
     @Autowired
-    Preguntaservice preguntaservice;
+    private Preguntaservice preguntaservice;
     @Autowired
-    RespuestaService respuestaService;
+    private RespuestaService respuestaService;
     @Autowired
-    CategoriaService categoriaService;
+    private CategoriaService categoriaService;
 
     @GetMapping
     public String obtenerTodas(Model model){

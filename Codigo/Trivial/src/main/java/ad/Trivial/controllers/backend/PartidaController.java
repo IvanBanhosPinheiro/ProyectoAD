@@ -18,9 +18,9 @@ import java.util.List;
 public class PartidaController {
 
     @Autowired
-    PartidaService partidaService;
+    private PartidaService partidaService;
     @Autowired
-    UsuarioPreguntaPartidaService usuarioPreguntaPartidaService;
+    private UsuarioPreguntaPartidaService usuarioPreguntaPartidaService;
 
     @GetMapping
     public String  obtenerTodas(Model model){

@@ -18,11 +18,11 @@ import java.util.List;
 public class UsuarioController {
 
     @Autowired
-    UsuarioService usuarioService;
+    private UsuarioService usuarioService;
     @Autowired
-    PartidaService partidaService;
+    private PartidaService partidaService;
     @Autowired
-    UsuarioPreguntaPartidaService usuarioPreguntaPartidaService;
+    private UsuarioPreguntaPartidaService usuarioPreguntaPartidaService;
 
     @GetMapping
     public String obtenerTodos(Model model){
@@ -55,7 +55,7 @@ public class UsuarioController {
     @GetMapping("/delete/{id}")
     public String borrar(@PathVariable Long id) {
         try {
-            usuarioPreguntaPartidaService.eliminarTodosPorUsuarioID(id);
+            usuarioPreguntaPartidaService.borrarTodosPorUsuarioID(id);
 
             partidaService.eliminarPorUsuarioID(id);
 

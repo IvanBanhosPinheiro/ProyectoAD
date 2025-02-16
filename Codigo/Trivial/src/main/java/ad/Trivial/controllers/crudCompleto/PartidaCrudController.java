@@ -1,6 +1,7 @@
 package ad.Trivial.controllers.crudCompleto;
 
 import ad.Trivial.models.Partida;
+import ad.Trivial.models.modelosDTO.AgregarPreguntaRequest;
 import ad.Trivial.services.PartidaService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -24,7 +25,7 @@ import java.util.List;
 public class PartidaCrudController {
 
     @Autowired
-    PartidaService partidaService;
+    private PartidaService partidaService;
 
     /**
      * Obtiene todas las partidas.
@@ -84,10 +85,19 @@ public class PartidaCrudController {
     public Partida guardar(
             @Parameter(description = "Datos de la partida a guardar", required = true,
                     content = @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = ad.Trivial.models.dto.AgregarPreguntaRequest.class),
+                            schema = @Schema(implementation = Partida.class),
                             examples = @ExampleObject(value = """
                                         {
-                                          Añadir
+                                            "fechaInicio": "2025-02-14",
+                                            "fechaFin": "2025-02-14",
+                                            "puntuacion": 16,
+                                            "usuario": {
+                                                "id": 2,
+                                                "nombre": "Jugador 1",
+                                                "email": "jugador1@ejemplo.com",
+                                                "contraseña": "contraseña_segura",
+                                                "rol": "usuario"
+                                            }
                                         }
                                         """))) @RequestBody Partida partida){
         return partidaService.guardar(partida);
@@ -121,11 +131,21 @@ public class PartidaCrudController {
     public Partida actualizar(
             @Parameter(description = "Datos de la partida a actualizar", required = true,
                     content = @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = ad.Trivial.models.dto.AgregarPreguntaRequest.class),
+                            schema = @Schema(implementation = Partida.class),
                             examples = @ExampleObject(value = """
-                                        {
-                                          Añadir
+                                    {
+                                        "id": 3,
+                                        "fechaInicio": "2025-02-14",
+                                        "fechaFin": "2025-02-14",
+                                        "puntuacion": 18,
+                                        "usuario": {
+                                            "id": 2,
+                                            "nombre": "Jugador 1",
+                                            "email": "jugador1@ejemplo.com",
+                                            "contraseña": "contraseña_segura",
+                                            "rol": "usuario"
                                         }
+                                    }
                                         """))) @RequestBody Partida partida){
         return partidaService.actualizar(partida);
     }

@@ -23,7 +23,7 @@ import java.util.List;
 @Tag(name = "Crud - Categoria", description = "Operaciones relacionadas con las categorías")
 public class CategoriaCrudController {
     @Autowired
-    CategoriaService categoriaService;
+    private CategoriaService categoriaService;
 
     /**
      * Obtiene todas las categorías.
@@ -43,8 +43,8 @@ public class CategoriaCrudController {
                             ]
                             """)))
     @GetMapping
-    public List<Categoria> obtenerTodas(){
-        return  categoriaService.obtenerTodas();
+    public List<Categoria> obtenerTodas() {
+        return categoriaService.obtenerTodas();
     }
 
     /**
@@ -67,12 +67,13 @@ public class CategoriaCrudController {
     public Categoria guardar(
             @Parameter(description = "Datos de la categoría a guardar", required = true,
                     content = @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = ad.Trivial.models.dto.AgregarPreguntaRequest.class),
-                            examples = @ExampleObject(value = """
+                            schema = @Schema(implementation = Categoria.class),
+                            examples = @ExampleObject(value = """                                  
                                         {
-                                          Añadir
-                                        }
-                                        """))) @RequestBody Categoria categoria){
+                                              "nombre": "Nueva",
+                                             "descripcion": "Nuevas preguntas."
+                                        }                         
+                                    """))) @RequestBody Categoria categoria) {
         return categoriaService.guardar(categoria);
     }
 
@@ -96,12 +97,14 @@ public class CategoriaCrudController {
     public Categoria actualizar(
             @Parameter(description = "Datos de la categoría a actualizar", required = true,
                     content = @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = ad.Trivial.models.dto.AgregarPreguntaRequest.class),
+                            schema = @Schema(implementation = Categoria.class),
                             examples = @ExampleObject(value = """
-                                        {
-                                          Añadir
-                                        }
-                                        """))) @RequestBody Categoria categoria){
+                                    {
+                                        "id": 5,
+                                        "nombre": "Nueva",
+                                        "descripcion": "Nuevas preguntas actualizadas."
+                                    }
+                                    """))) @RequestBody Categoria categoria) {
         return categoriaService.guardar(categoria);
     }
 
@@ -114,7 +117,7 @@ public class CategoriaCrudController {
     @ApiResponse(responseCode = "200", description = "Categoría eliminada con éxito")
     @DeleteMapping("/{id}")
     public void borrar(
-            @Parameter(description = "ID de la categoría a eliminar", required = true) @PathVariable Long id){
+            @Parameter(description = "ID de la categoría a eliminar", required = true) @PathVariable Long id) {
         categoriaService.eliminar(id);
     }
 }

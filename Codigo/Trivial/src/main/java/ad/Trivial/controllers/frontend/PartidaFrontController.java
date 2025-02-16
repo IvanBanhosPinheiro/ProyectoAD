@@ -1,7 +1,9 @@
 package ad.Trivial.controllers.frontend;
 
 import ad.Trivial.models.modelosDTO.PartidaDTO;
+import ad.Trivial.models.modelosDTO.UsuariODTO;
 import ad.Trivial.services.PartidaService;
+import ad.Trivial.services.UsuarioService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -25,7 +27,9 @@ import java.util.List;
 public class PartidaFrontController {
 
     @Autowired
-    PartidaService partidaService;
+    private PartidaService partidaService;
+    @Autowired
+    private UsuarioService usuarioService;
 
     /**
      * Obtiene todas las partidas.
@@ -36,7 +40,19 @@ public class PartidaFrontController {
     @ApiResponse(responseCode = "200", description = "Lista obtenida con éxito",
             content = @Content(mediaType = "application/json",
                     examples = @ExampleObject(value = """
-                            Ejemplo a Poñer
+                            [
+                                {
+                                    "id": 1,
+                                    "fechaInicio": "2025-02-14",
+                                    "fechaFin": "2025-02-14",
+                                    "usuario": {
+                                        "id": 2,
+                                        "nombre": "Jugador 1",
+                                        "email": "jugador1@ejemplo.com"
+                                    },
+                                    "puntuacion": 15
+                                }
+                            ]
                             """)))
     @GetMapping
     public List<PartidaDTO> obtenerTodas(){
@@ -53,7 +69,19 @@ public class PartidaFrontController {
     @ApiResponse(responseCode = "200", description = "Lista obtenida con éxito",
             content = @Content(mediaType = "application/json",
                     examples = @ExampleObject(value = """
-                            Ejemplo a Poñer
+                            [
+                                {
+                                    "id": 1,
+                                    "fechaInicio": "2025-02-14",
+                                    "fechaFin": "2025-02-14",
+                                    "usuario": {
+                                        "id": 2,
+                                        "nombre": "Jugador 1",
+                                        "email": "jugador1@ejemplo.com"
+                                    },
+                                    "puntuacion": 15
+                                }
+                            ]
                             """)))
     @GetMapping("/{id}")
     public PartidaDTO obtenerPorId(
@@ -71,18 +99,38 @@ public class PartidaFrontController {
     @ApiResponse(responseCode = "200", description = "Lista obtenida con éxito",
             content = @Content(mediaType = "application/json",
                     examples = @ExampleObject(value = """
-                            Ejemplo a Poñer
+                            {
+                                "id": 2,
+                                "fechaInicio": "2025-02-14",
+                                "fechaFin": "2025-02-15",
+                                "usuario": {
+                                    "id": 2,
+                                    "nombre": "Jugador 1",
+                                    "email": "jugador1@ejemplo.com"
+                                },
+                                "puntuacion": 20
+                            }
                             """)))
     @PostMapping
     public ResponseEntity<?> guardar(
             @Parameter(description = "Datos de la partida a guardar", required = true,
                     content = @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = ad.Trivial.models.dto.AgregarPreguntaRequest.class),
+                            schema = @Schema(implementation = PartidaDTO.class),
                             examples = @ExampleObject(value = """
-                                        {
-                                          Añadir
-                                        }
+                                    {
+                                        "fechaInicio": "2025-02-14",
+                                        "fechaFin": "2025-02-15",
+                                        "usuario": {
+                                            "id": 2
+                                        },
+                                        "puntuacion": 20
+                                    }
                                         """))) @RequestBody PartidaDTO partidaDTO){
+        UsuariODTO usuario = (UsuariODTO) usuarioService.obtenerPorIdDTO(partidaDTO.getUsuario().getId()).getBody();
+        if (usuario == null){
+            return ResponseEntity.badRequest().body("El usuario especificado no existe.");
+        }
+        partidaDTO.setUsuario(usuario);
         return partidaService.guardarDTO(partidaDTO);
     }
 

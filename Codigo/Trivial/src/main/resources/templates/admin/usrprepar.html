@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Gestión de Productos - Backend</title>
+    <title>Gestión de UsuarioPreguntaPartida - Backend</title>
     <!-- Bootstrap CSS CDN -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
           integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
@@ -44,67 +44,70 @@
 
 <!-- Contenido principal -->
 <div class="container mt-4">
-    <h1 class="mb-4">Gestión de Productos</h1>
+    <h1 class="mb-4">Gestión de UsuarioPreguntaPartida</h1>
 
-    <!-- Listado de Productos -->
+    <!-- Listado de UsuarioPreguntaPartida -->
     <section class="mb-5">
-        <h2>Listado de Productos</h2>
+        <h2>Listado de UsuarioPreguntaPartida</h2>
         <table class="table table-striped table-hover">
             <thead class="table-dark">
             <tr>
                 <th>ID</th>
-                <th>Nombre</th>
-                <th>Precio</th>
-                <th>Categoría</th>
+                <th>ID/Usuario</th>
+                <th>ID/Pregunta</th>
+                <th>ID-Partida</th>
+                <th>Acertada</th>
                 <th>Acciones</th>
             </tr>
             </thead>
             <tbody>
-            <tr th:each="producto : ${productos}">
-                <td th:text="${producto.id}">1</td>
-                <td th:text="${producto.nombre}">Nombre Producto</td>
-                <td th:text="${producto.precio}">0.00</td>
-                <td th:text="${producto.categoria.nombre}">Categoría</td>
+            <tr th:each="usuarioPreguntaPartida : ${usuarioPreguntaPartidas}">
+                <td th:text="${usuarioPreguntaPartida.id}">1</td>
+                <td th:text="${usuarioPreguntaPartida.usuario.id} + ' / ' + ${usuarioPreguntaPartida.usuario.nombre}">ID/Nombre Usuario</td>
+                <td th:text="${usuarioPreguntaPartida.pregunta.id} + ' / ' + ${usuarioPreguntaPartida.pregunta.texto}">ID/Texto Pregunta</td>
+                <td th:text="${usuarioPreguntaPartida.partida.id}">ID Partida</td>
+                <td th:text="${usuarioPreguntaPartida.acertada} ? 'Sí' : 'No'">Acertada</td>
                 <td>
-                    <a th:href="@{'/admin/productos/edit/' + ${producto.id}}"
+                    <a th:href="@{'/admin/usrprepar/edit/' + ${usuarioPreguntaPartida.id}}"
                        class="btn btn-sm btn-primary me-1">Editar</a>
-                    <a th:href="@{'/admin/productos/delete/' + ${producto.id}}" class="btn btn-sm btn-danger"
-                       onclick="return confirm('¿Está seguro de eliminar este producto?');">Eliminar</a>
+                    <a th:href="@{'/admin/usrprepar/delete/' + ${usuarioPreguntaPartida.id}}" class="btn btn-sm btn-danger"
+                       onclick="return confirm('¿Está seguro de eliminar este registro?');">Eliminar</a>
                 </td>
             </tr>
             </tbody>
         </table>
     </section>
 
-    <!-- Formulario de Producto -->
+    <!-- Formulario de UsuarioPreguntaPartida -->
     <section>
         <div class="card">
             <div class="card-header">
-                <h2 th:text="${producto.id} == null ? 'Crear Nuevo Producto' : 'Editar Producto'">Formulario de
-                    Producto</h2>
+                <h2 th:text="${usuarioPreguntaPartida.id} == null ? 'Crear Nuevo Registro' : 'Editar Registro'">Formulario de UsuarioPreguntaPartida</h2>
             </div>
             <div class="card-body">
-                <form th:action="@{/admin/productos/save}" th:object="${producto}" method="post">
+                <form th:action="@{/admin/usrprepar/save}" th:object="${usuarioPreguntaPartida}" method="post">
                     <input type="hidden" th:field="*{id}">
                     <div class="mb-3">
-                        <label for="nombre" class="form-label">Nombre:</label>
-                        <input type="text" th:field="*{nombre}" id="nombre" class="form-control"
-                               placeholder="Ingrese el nombre" required>
+                        <label for="usuario" class="form-label">Usuario:</label>
+                        <input type="number" th:field="*{usuario.id}" id="usuario" class="form-control" required>
                     </div>
                     <div class="mb-3">
-                        <label for="precio" class="form-label">Precio:</label>
-                        <input type="number" step="0.01" th:field="*{precio}" id="precio" class="form-control"
-                               placeholder="Ingrese el precio" required>
+                        <label for="pregunta" class="form-label">Pregunta:</label>
+                        <input type="number" th:field="*{pregunta.id}" id="pregunta" class="form-control" required>
                     </div>
                     <div class="mb-3">
-                        <label for="categoria" class="form-label">Categoría:</label>
-                        <select name="categoriaId" id="categoria" class="form-select" required>
-                            <option value="">Seleccione una categoría</option>
-                            <option th:each="cat : ${categorias}" th:value="${cat.id}" th:text="${cat.nombre}"></option>
+                        <label for="partida" class="form-label">Partida:</label>
+                        <input type="number" th:field="*{partida.id}" id="partida" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="acertada" class="form-label">Acertada:</label>
+                        <select th:field="*{acertada}" id="acertada" class="form-select" required>
+                            <option value="true">Sí</option>
+                            <option value="false">No</option>
                         </select>
                     </div>
                     <button type="submit" class="btn btn-success me-2">Guardar</button>
-                    <a th:href="@{/admin/productos}" class="btn btn-secondary">Cancelar</a>
+                    <a th:href="@{/admin/usrprepar}" class="btn btn-secondary">Cancelar</a>
                 </form>
             </div>
         </div>

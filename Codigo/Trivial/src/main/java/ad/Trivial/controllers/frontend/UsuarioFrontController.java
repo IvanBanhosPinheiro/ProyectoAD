@@ -1,7 +1,6 @@
 package ad.Trivial.controllers.frontend;
 
 import ad.Trivial.models.Usuario;
-import ad.Trivial.models.modelosDTO.UsuariODTO;
 import ad.Trivial.services.UsuarioService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -19,12 +18,34 @@ import org.springframework.web.bind.annotation.*;
  * Proporciona endpoints para realizar operaciones relacionadas con los usuarios.
  */
 @RestController
-@RequestMapping("/api/usuario")
+@RequestMapping("/api/usuarios")
 @Tag(name = "Api - Usuario", description = "Operaciones relacionadas con los usuarios")
 public class UsuarioFrontController {
 
     @Autowired
     private UsuarioService usuarioService;
+
+    /**
+     * Obtiene todos los usuarios menos los administradores.
+     *
+     * @return lista de usuarios
+     */
+    @Operation(summary = "Obtener todos los usuarios que no son administradores", description = "Retorna una lista de usuarios que no son administradores")
+    @ApiResponse(responseCode = "200", description = "Lista obtenida con éxito",
+            content = @Content(mediaType = "application/json",
+                    examples = @ExampleObject(value = """
+                            [
+                                {
+                                    "id": 1,
+                                    "nombre": "Admin Usuario",
+                                    "email": "admin@ejemplo.com"
+                                }
+                            ]
+                            """)))
+    @GetMapping
+    public ResponseEntity<?> obtenerTodos(){
+        return usuarioService.obtenerTodosSinAdministradoresDTO();
+    }
 
     /**
      * Obtiene un usuario por su ID.
@@ -33,15 +54,19 @@ public class UsuarioFrontController {
      * @return el usuario especificado por su ID
      */
     @Operation(summary = "Obtener un usuario por ID", description = "Retorna un usuario específico por su ID")
-    @ApiResponse(responseCode = "200", description = "Lista obtenida con éxito",
+    @ApiResponse(responseCode = "200", description = "Objeto obtenido con éxito",
             content = @Content(mediaType = "application/json",
                     examples = @ExampleObject(value = """
-                            Ejemplo a Poñer
+                            {
+                                "id": 1,
+                                "nombre": "Admin Usuario",
+                                "email": "admin@ejemplo.com"
+                            }
                             """)))
     @GetMapping("/{id}")
     public ResponseEntity<?> obtenerPorId(
             @Parameter(description = "ID del usuario", required = true) @PathVariable Long id){
-        return usuarioService.obtenerPorId(id);
+        return usuarioService.obtenerPorIdDTO(id);
     }
 
     /**
@@ -51,21 +76,28 @@ public class UsuarioFrontController {
      * @return la respuesta de la entidad guardada
      */
     @Operation(summary = "Guardar un nuevo usuario", description = "Guarda un nuevo usuario en el sistema")
-    @ApiResponse(responseCode = "200", description = "Lista obtenida con éxito",
+    @ApiResponse(responseCode = "200", description = "Guardado con éxito",
             content = @Content(mediaType = "application/json",
                     examples = @ExampleObject(value = """
-                            Ejemplo a Poñer
+                            {
+                                "id": 5,
+                                "nombre": "Jugador 3",
+                                "email": "jugador3@ejemplo.com"
+                            }
                             """)))
     @PostMapping
     public ResponseEntity<?> guardar(
             @Parameter(description = "Datos del usuario a guardar", required = true,
                     content = @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = ad.Trivial.models.dto.AgregarPreguntaRequest.class),
+                            schema = @Schema(implementation = Usuario.class),
                             examples = @ExampleObject(value = """
-                                        {
-                                          Añadir
-                                        }
+                                    {
+                                        "nombre": "Jugador 3",
+                                        "email": "jugador3@ejemplo.com",
+                                        "contraseña": "contraseña_segura"
+                                    }
                                         """))) @RequestBody Usuario usuario){
+        usuario.setRol(Usuario.Rol.usuario);
         return usuarioService.guardarFront(usuario);
     }
 

@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -40,8 +41,12 @@ public class UsuarioService {
         return usuarioRepository.findById(id).orElse(null);
     }
 
+    public Usuario obtenerPorId(Long id){
+        Usuario usuario = usuarioRepository.findById(id).orElse(null);
+        return usuario;
+    }
     //Parte DTOs
-    public ResponseEntity<?> obtenerPorId(Long id){
+    public ResponseEntity<?> obtenerPorIdDTO(Long id){
         Usuario usuario = usuarioRepository.findById(id).orElse(null);
         if (usuario != null){
             UsuariODTO usuariODTO = conversionModelos.transformarUsuarioADTO(usuario);
@@ -49,6 +54,17 @@ public class UsuarioService {
         }else{
             return ResponseEntity.status(404).body("No se ha encontrado el usuario");
         }
+    }
+
+    public ResponseEntity<?> obtenerTodosSinAdministradoresDTO(){
+        List<Usuario> usuarios = usuarioRepository.findAll();
+        List<UsuariODTO> usuariODTOS = new ArrayList<>();
+        for (Usuario usuario : usuarios){
+            if (!usuario.getRol().equals("ADMIN")){
+                usuariODTOS.add(conversionModelos.transformarUsuarioADTO(usuario));
+            }
+        }
+        return ResponseEntity.ok(usuariODTOS);
     }
 
     public ResponseEntity<?> guardarFront(Usuario usuario){

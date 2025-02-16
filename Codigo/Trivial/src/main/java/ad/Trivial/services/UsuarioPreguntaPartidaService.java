@@ -82,7 +82,8 @@ public class UsuarioPreguntaPartidaService {
             usuarioPreguntaPartida.setPartida(partida);
             return ResponseEntity.ok(conversionModelos.transformarUsuarioPreguntaPartidaADTO(usuarioPreguntaPartida));
         } catch (Exception e) {
-            return ResponseEntity.status(500).body("Error interno del servidor");
+            e.printStackTrace();
+            return ResponseEntity.status(500).body("No se ha podido guardar");
         }
     }
     public void eliminarTodoPorPartidaID(Long id){
@@ -90,7 +91,7 @@ public class UsuarioPreguntaPartidaService {
     }
 
     @Transactional
-    public void eliminarTodosPorUsuarioID(Long id){
+    public void borrarTodosPorUsuarioID(Long id){
         usuarioPreguntaPartidaRepository.deleteAllByUsuarioId(id);
     }
 
@@ -137,6 +138,9 @@ public class UsuarioPreguntaPartidaService {
     }
 
 
+    public UsuarioPreguntaPartida obtenerPorId(Long id) {
+        return usuarioPreguntaPartidaRepository.findById(id).orElse(null);
+    }
 }
 
 

@@ -25,7 +25,7 @@ import java.util.List;
 public class PreguntaCrudController {
 
     @Autowired
-    Preguntaservice preguntaservice;
+    private Preguntaservice preguntaservice;
 
     /**
      * Obtiene todas las preguntas.
@@ -130,11 +130,16 @@ public class PreguntaCrudController {
     public Pregunta guardar(
             @Parameter(description = "Datos de la pregunta a guardar", required = true,
                     content = @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = ad.Trivial.models.dto.AgregarPreguntaRequest.class),
+                            schema = @Schema(implementation = Pregunta.class),
                             examples = @ExampleObject(value = """
-                                        {
-                                          Añadir
+                                    {
+                                        "texto": "¿Quién es el máximo goleador histórico de la NBA?",
+                                        "categoria": {
+                                            "id": 4,
+                                            "nombre": "Deportes",
+                                            "descripcion": "Preguntas sobre deportes y atletas famosos."
                                         }
+                                    }
                                         """))) @RequestBody Pregunta pregunta){
         // Llama al servicio para guardar una nueva pregunta
         return preguntaservice.guardar(pregunta);
@@ -164,11 +169,17 @@ public class PreguntaCrudController {
     public Pregunta actualizar(
             @Parameter(description = "Datos de la pregunta a actualizar", required = true,
                     content = @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = ad.Trivial.models.dto.AgregarPreguntaRequest.class),
+                            schema = @Schema(implementation = Pregunta.class),
                             examples = @ExampleObject(value = """
-                                        {
-                                          Añadir
+                                    {
+                                        "id": 121,
+                                        "texto": "¿Quién es el máximo goleador histórico de la NBA?",
+                                        "categoria": {
+                                            "id": 4,
+                                            "nombre": "Deportes",
+                                            "descripcion": "Preguntas sobre deportes y atletas famosos."
                                         }
+                                    }
                                         """))) @RequestBody Pregunta pregunta){
         // Llama al servicio para actualizar una pregunta existente
         return preguntaservice.actualizar(pregunta);

@@ -24,7 +24,7 @@ import java.util.List;
 public class UsuarioCrudController {
 
     @Autowired
-    UsuarioService usuarioService;
+    private UsuarioService usuarioService;
 
     /**
      * Obtiene todos los usuarios.
@@ -37,9 +37,11 @@ public class UsuarioCrudController {
                     examples = @ExampleObject(value = """
                             [
                               {
-                                "id": 1,
-                                "nombre": "Juan Perez",
-                                "email": "juan.perez@example.com"
+                                  "id": 2,
+                                  "nombre": "Jugador 1",
+                                  "email": "jugador1@ejemplo.com",
+                                  "contraseña": "contraseña_segura",
+                                  "rol": "usuario"
                               }
                             ]
                             """)))
@@ -59,20 +61,25 @@ public class UsuarioCrudController {
             content = @Content(mediaType = "application/json",
                     examples = @ExampleObject(value = """
                             {
-                              "id": 1,
-                              "nombre": "Juan Perez",
-                              "email": "juan.perez@example.com"
+                                "id": 4,
+                                "nombre": "Jugador 2",
+                                "email": "jugador2@ejemplo.com",
+                                "contraseña": "contraseña_segura",
+                                "rol": "usuario"
                             }
                             """)))
     @PostMapping
     public Usuario guardar(
             @Parameter(description = "Datos del usuario a guardar", required = true,
                     content = @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = ad.Trivial.models.dto.AgregarPreguntaRequest.class),
+                            schema = @Schema(implementation = Usuario.class),
                             examples = @ExampleObject(value = """
-                                        {
-                                          Añadir
-                                        }
+                                    {
+                                        "nombre": "Jugador 2",
+                                        "email": "jugador2@ejemplo.com",
+                                        "contraseña": "contraseña_segura",
+                                        "rol": "usuario"
+                                    }
                                         """))) @RequestBody Usuario usuario){
         return usuarioService.guardar(usuario);
     }
@@ -87,21 +94,29 @@ public class UsuarioCrudController {
     @ApiResponse(responseCode = "200", description = "Usuario actualizado con éxito",
             content = @Content(mediaType = "application/json",
                     examples = @ExampleObject(value = """
-                            {
-                              "id": 1,
-                              "nombre": "Juan Perez",
-                              "email": "juan.perez@example.com"
+                            [
+                                {
+                                    "id": 4,
+                                    "nombre": "Jugador 2 actualizado",
+                                    "email": "jugador2@ejemplo.com",
+                                    "contraseña": "contraseña_segura",
+                                    "rol": "usuario"
+                                }
                             }
                             """)))
     @PutMapping
     public Usuario actualizar(
             @Parameter(description = "Datos del usuario a actualizar", required = true,
                     content = @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = ad.Trivial.models.dto.AgregarPreguntaRequest.class),
+                            schema = @Schema(implementation = Usuario.class),
                             examples = @ExampleObject(value = """
-                                        {
-                                          Añadir
-                                        }
+                                    {
+                                        "id": 4,
+                                        "nombre": "Jugador 2 actualizado",
+                                        "email": "jugador2@ejemplo.com",
+                                        "contraseña": "contraseña_segura",
+                                        "rol": "usuario"
+                                    }
                                         """))) @RequestBody Usuario usuario){
         return usuarioService.actualizar(usuario);
     }

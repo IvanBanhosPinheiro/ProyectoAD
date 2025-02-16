@@ -18,16 +18,16 @@ import org.springframework.web.bind.annotation.*;
 @Hidden
 public class CategoriaController {
     @Autowired
-    CategoriaService categoriaService;
+    private CategoriaService categoriaService;
 
     @Autowired
-    Preguntaservice preguntaservice;
+    private Preguntaservice preguntaservice;
 
     @Autowired
-    RespuestaService respuestaService;
+    private RespuestaService respuestaService;
 
     @Autowired
-    UsuarioPreguntaPartidaService usuarioPreguntaPartidaService;
+    private UsuarioPreguntaPartidaService usuarioPreguntaPartidaService;
 
     @GetMapping
     public String obtenerTodas(Model model) {

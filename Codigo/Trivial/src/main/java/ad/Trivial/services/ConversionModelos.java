@@ -74,6 +74,7 @@ public class ConversionModelos {
         partidaDTO.setFechaInicio(usuarioPreguntaPartida.getPartida().getFechaInicio());
         partidaDTO.setFechaFin(usuarioPreguntaPartida.getPartida().getFechaFin());
         partidaDTO.setPuntuacion(usuarioPreguntaPartida.getPartida().getPuntuacion());
+        partidaDTO.setUsuario(usuariODTO);
         // guardamos la relacion
         usuarioPreguntaPartidaDTO.setPregunta(preguntaDTO);
         usuarioPreguntaPartidaDTO.setPartida(partidaDTO);

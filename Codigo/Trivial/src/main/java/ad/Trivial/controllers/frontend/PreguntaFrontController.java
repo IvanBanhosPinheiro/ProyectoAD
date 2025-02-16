@@ -36,7 +36,41 @@ public class PreguntaFrontController {
     @ApiResponse(responseCode = "200", description = "Lista obtenida con éxito",
             content = @Content(mediaType = "application/json",
                     examples = @ExampleObject(value = """
-                            Ejemplo a Poñer
+                            [
+                                {
+                                    "categoria": {
+                                        "id": 1,
+                                        "nombre": "Historia",
+                                        "descripcion": "Preguntas relacionadas con eventos históricos y personajes importantes."
+                                    },
+                                    "preguntas": [
+                                        {
+                                            "id": 108,
+                                            "pregunta": "¿En qué año se produjo la caída del Imperio Romano de Occidente?",
+                                            "respuestas": [
+                                                {
+                                                    "id": 430,
+                                                    "respuesta": "476 d.C.",
+                                                    "correcta": true
+                                                },
+                                                {
+                                                    "id": 432,
+                                                    "respuesta": "600 d.C.",
+                                                    "correcta": false
+                                                },
+                                                {
+                                                    "id": 429,
+                                                    "respuesta": "410 d.C.",
+                                                    "correcta": false
+                                                },
+                                                {
+                                                    "id": 431,
+                                                    "respuesta": "533 d.C.",
+                                                    "correcta": false
+                                                }
+                                            ]
+                                        }
+                                    ]
                             """)))
     @GetMapping
     public List<PreguntasDTO> obtenerTodas() {
@@ -54,7 +88,41 @@ public class PreguntaFrontController {
     @ApiResponse(responseCode = "200", description = "Lista obtenida con éxito",
             content = @Content(mediaType = "application/json",
                     examples = @ExampleObject(value = """
-                            Ejemplo a Poñer
+                            {
+                                "categoria": {
+                                    "id": 1,
+                                    "nombre": "Historia",
+                                    "descripcion": "Preguntas relacionadas con eventos históricos y personajes importantes."
+                                },
+                                "preguntas": [
+                                    {
+                                        "id": 115,
+                                        "pregunta": "¿En qué año se inauguró el Canal de Panamá?",
+                                        "respuestas": [
+                                            {
+                                                "id": 459,
+                                                "respuesta": "1920",
+                                                "correcta": false
+                                            },
+                                            {
+                                                "id": 458,
+                                                "respuesta": "1914",
+                                                "correcta": true
+                                            },
+                                            {
+                                                "id": 460,
+                                                "respuesta": "1930",
+                                                "correcta": false
+                                            },
+                                            {
+                                                "id": 457,
+                                                "respuesta": "1900",
+                                                "correcta": false
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
                             """)))
     @GetMapping("/categoria/{id}")
     public ResponseEntity<?> obtenerLimitadasPorCategorias(

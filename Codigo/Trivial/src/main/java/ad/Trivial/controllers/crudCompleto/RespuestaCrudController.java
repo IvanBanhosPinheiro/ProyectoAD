@@ -24,7 +24,7 @@ import java.util.List;
 public class RespuestaCrudController {
 
     @Autowired
-    RespuestaService respuestaService;
+    private RespuestaService respuestaService;
 
     /**
      * Obtiene todas las respuestas.
@@ -37,9 +37,18 @@ public class RespuestaCrudController {
                     examples = @ExampleObject(value = """
                             [
                               {
-                                "id": 1,
-                                "texto": "Respuesta 1",
-                                "correcta": true
+                                  "id": 485,
+                                  "respuesta": "LeBron James",
+                                  "esCorrecta": false,
+                                  "pregunta": {
+                                      "id": 1,
+                                      "texto": "¿Quién es el máximo goleador histórico de la NBA?",
+                                      "categoria": {
+                                          "id": 4,
+                                          "nombre": "Deportes",
+                                          "descripcion": "Preguntas sobre deportes y atletas famosos."
+                                      }
+                                  }
                               }
                             ]
                             """)))
@@ -59,20 +68,39 @@ public class RespuestaCrudController {
             content = @Content(mediaType = "application/json",
                     examples = @ExampleObject(value = """
                             {
-                              "id": 1,
-                              "texto": "Respuesta 1",
-                              "correcta": true
+                                "id": 485,
+                                "respuesta": "LeBron James",
+                                "esCorrecta": false,
+                                "pregunta": {
+                                    "id": 1,
+                                    "texto": "¿Quién es el máximo goleador histórico de la NBA?",
+                                    "categoria": {
+                                        "id": 4,
+                                        "nombre": "Deportes",
+                                        "descripcion": "Preguntas sobre deportes y atletas famosos."
+                                    }
+                                }
                             }
                             """)))
     @PostMapping
     public Respuesta guardar(
             @Parameter(description = "Datos de la respuesta a guardar", required = true,
                     content = @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = ad.Trivial.models.dto.AgregarPreguntaRequest.class),
+                            schema = @Schema(implementation = Respuesta.class),
                             examples = @ExampleObject(value = """
-                                        {
-                                          Añadir
+                                    {
+                                        "respuesta": "LeBron James",
+                                        "esCorrecta": false,
+                                        "pregunta": {
+                                            "id": 1,
+                                            "texto": "¿Quién es el máximo goleador histórico de la NBA?",
+                                            "categoria": {
+                                                "id": 4,
+                                                "nombre": "Deportes",
+                                                "descripcion": "Preguntas sobre deportes y atletas famosos."
+                                            }
                                         }
+                                    }
                                         """))) @RequestBody Respuesta respuesta){
         return respuestaService.guardar(respuesta);
     }
@@ -88,20 +116,40 @@ public class RespuestaCrudController {
             content = @Content(mediaType = "application/json",
                     examples = @ExampleObject(value = """
                             {
-                              "id": 1,
-                              "texto": "Respuesta 1",
-                              "correcta": true
+                                "id": 485,
+                                "respuesta": "LeBron James actualizado",
+                                "esCorrecta": false,
+                                "pregunta": {
+                                    "id": 1,
+                                    "texto": "¿Quién es el máximo goleador histórico de la NBA?",
+                                    "categoria": {
+                                        "id": 4,
+                                        "nombre": "Deportes",
+                                        "descripcion": "Preguntas sobre deportes y atletas famosos."
+                                    }
+                                }
                             }
                             """)))
     @PutMapping
     public Respuesta actualizar(
             @Parameter(description = "Datos de la respuesta a actualizar", required = true,
                     content = @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = ad.Trivial.models.dto.AgregarPreguntaRequest.class),
+                            schema = @Schema(implementation = Respuesta.class),
                             examples = @ExampleObject(value = """
-                                        {
-                                          Añadir
+                                    {
+                                        "id": 485,
+                                        "respuesta": "LeBron James actualizado",
+                                        "esCorrecta": false,
+                                        "pregunta": {
+                                            "id": 1,
+                                            "texto": "¿Quién es el máximo goleador histórico de la NBA?",
+                                            "categoria": {
+                                                "id": 4,
+                                                "nombre": "Deportes",
+                                                "descripcion": "Preguntas sobre deportes y atletas famosos."
+                                            }
                                         }
+                                    }
                                         """))) @RequestBody Respuesta respuesta){
         return respuestaService.actualizar(respuesta);
     }

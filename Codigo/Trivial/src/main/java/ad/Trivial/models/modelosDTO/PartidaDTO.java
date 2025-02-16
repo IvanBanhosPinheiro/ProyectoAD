@@ -12,6 +12,7 @@ public class PartidaDTO {
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private Date fechaFin;
+
     private UsuariODTO usuario;
     private Integer puntuacion;
 

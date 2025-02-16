@@ -175,4 +175,7 @@ public class Preguntaservice {
     }
 
 
+    public Pregunta obtenerPorId(Long id) {
+        return preguntaRepository.findById(id).orElse(null);
+    }
 }

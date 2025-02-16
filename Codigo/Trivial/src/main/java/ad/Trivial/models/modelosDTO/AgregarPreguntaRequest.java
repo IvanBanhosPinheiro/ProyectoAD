@@ -1,4 +1,4 @@
-package ad.Trivial.models.dto;
+package ad.Trivial.models.modelosDTO;
 
 public class AgregarPreguntaRequest {
     private Long partidaId;

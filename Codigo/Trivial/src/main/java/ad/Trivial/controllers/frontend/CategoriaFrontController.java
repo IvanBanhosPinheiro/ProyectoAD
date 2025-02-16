@@ -24,7 +24,7 @@ import java.util.List;
 public class CategoriaFrontController {
 
     @Autowired
-    CategoriaService categoriaService;
+    private CategoriaService categoriaService;
 
     /**
      * Obtiene todas las categorías.
@@ -35,7 +35,13 @@ public class CategoriaFrontController {
     @ApiResponse(responseCode = "200", description = "Lista obtenida con éxito",
             content = @Content(mediaType = "application/json",
                     examples = @ExampleObject(value = """
-                            Ejemplo a Poñer
+                            [
+                                {
+                                    "id": 1,
+                                    "nombre": "Historia",
+                                    "descripcion": "Preguntas relacionadas con eventos históricos y personajes importantes."
+                                }
+                            ]
                             """)))
     @GetMapping
     public List<Categoria> obtenerTodas(){
