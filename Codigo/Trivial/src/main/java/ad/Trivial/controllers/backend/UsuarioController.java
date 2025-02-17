@@ -6,6 +6,7 @@ import ad.Trivial.services.UsuarioPreguntaPartidaService;
 import ad.Trivial.services.UsuarioService;
 import io.swagger.v3.oas.annotations.Hidden;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -48,6 +49,7 @@ public class UsuarioController {
 
     @PostMapping("/save")
     public String guardar(@ModelAttribute Usuario usuario){
+        usuario.setContraseña(new BCryptPasswordEncoder().encode(usuario.getContraseña()));
         usuarioService.guardar(usuario);
         return "redirect:/admin/usuarios";
     }

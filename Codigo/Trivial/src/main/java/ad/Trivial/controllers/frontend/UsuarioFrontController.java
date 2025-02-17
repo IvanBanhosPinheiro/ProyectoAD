@@ -11,6 +11,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -97,6 +98,7 @@ public class UsuarioFrontController {
                                         "contraseña": "contraseña_segura"
                                     }
                                         """))) @RequestBody Usuario usuario){
+        usuario.setContraseña(new BCryptPasswordEncoder().encode(usuario.getContraseña()));
         usuario.setRol(Usuario.Rol.usuario);
         return usuarioService.guardarFront(usuario);
     }
