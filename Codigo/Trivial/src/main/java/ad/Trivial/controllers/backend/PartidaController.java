@@ -1,6 +1,5 @@
 package ad.Trivial.controllers.backend;
 
-import ad.Trivial.models.Categoria;
 import ad.Trivial.models.Partida;
 import ad.Trivial.services.PartidaService;
 import ad.Trivial.services.UsuarioPreguntaPartidaService;
@@ -10,7 +9,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 
 @Controller
 @RequestMapping("/admin/partidas")

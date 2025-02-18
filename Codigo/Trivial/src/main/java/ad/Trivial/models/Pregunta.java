@@ -3,7 +3,6 @@ package ad.Trivial.models;
 import jakarta.persistence.*;
 import io.swagger.v3.oas.annotations.media.Schema;
 
-import java.util.List;
 
 /**
  * Representa una pregunta en el sistema.

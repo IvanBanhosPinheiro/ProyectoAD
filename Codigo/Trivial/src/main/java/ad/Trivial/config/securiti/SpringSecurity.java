@@ -4,58 +4,79 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.security.config.Customizer;
+import java.util.Arrays;
 
 @Configuration
 @EnableWebSecurity
-public class SpringSecurity{
+public class SpringSecurity {
 
     @Autowired
-    @Lazy  // Hace que la inyección sea perezosa y evite la dependencia circular
+    @Lazy
     private UserDetailsServiceImpl userDetailsService;
 
-
     @Autowired
-    @Lazy  // Inyección perezosa de JwtRequestFilter para evitar el ciclo
-    private JwtRequestFilter jwtRequestFilter;  // Inyección automática
-
+    @Lazy
+    private JwtRequestFilter jwtRequestFilter;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(AbstractHttpConfigurer::disable) // Deshabilitar CSRF
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // Sin sesiones
+                .csrf(AbstractHttpConfigurer::disable)
+                .cors(Customizer.withDefaults())
+                .headers(headers -> headers
+                        .frameOptions(frame -> frame.disable()))
+                .sessionManagement(session ->
+                        session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        // Rutas públicas
-                        .requestMatchers("/auth/login", "/auth/register").permitAll()
-                        // Rutas para el ADMIN
-                        .requestMatchers(HttpMethod.POST, "/crud/**").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.PUT, "/crud/**").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.DELETE, "/crud/**").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.GET, "/crud/**").hasRole("ADMIN")
-                        // Rutas para los usuarios normales
-                       .requestMatchers(HttpMethod.GET, "/api/**").hasAnyRole("USUARIO", "ADMIN")
-                        .requestMatchers(HttpMethod.POST, "/api/**").hasAnyRole("USUARIO", "ADMIN")
-                        .requestMatchers(HttpMethod.PUT, "/api/**").hasAnyRole("USUARIO", "ADMIN")
-                        .requestMatchers(HttpMethod.DELETE, "/api/**").hasAnyRole("USUARIO", "ADMIN")
-                        // Cualquier otra petición requiere autenticación
+                        // Swagger UI
+                        .requestMatchers("/v3/api-docs/**",
+                                "/swagger-ui/**",
+                                "/swagger-ui.html",
+                                "/swagger-resources/**",
+                                "/webjars/**").permitAll()
+                        // Auth y H2
+                        .requestMatchers("/auth/**").permitAll()
+                        .requestMatchers("/h2-console/**").permitAll()
+                        // Admin routes
+                        .requestMatchers("/admin/**").hasAuthority("admin")
+                        .requestMatchers("/crud/**").hasAuthority("admin")
+                        // User routes
+                        .requestMatchers("/api/**").hasAnyAuthority("usuario", "admin")
                         .anyRequest().authenticated()
                 )
-                .addFilterAfter(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class); // Filtro JWT
+                .authenticationProvider(authenticationProvider())
+                .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
+    }
+
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(Arrays.asList("*"));
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        configuration.setAllowedHeaders(Arrays.asList("*"));
+        configuration.setExposedHeaders(Arrays.asList("Authorization"));
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
     }
 
     @Bean

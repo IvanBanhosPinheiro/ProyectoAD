@@ -1,9 +1,7 @@
 package ad.Trivial.services;
 
 import ad.Trivial.models.Partida;
-import ad.Trivial.models.Usuario;
 import ad.Trivial.models.modelosDTO.PartidaDTO;
-import ad.Trivial.models.modelosDTO.UsuariODTO;
 import ad.Trivial.repositories.PartidaRepository;
 import ad.Trivial.repositories.UsuarioRepository;
 import jakarta.transaction.Transactional;

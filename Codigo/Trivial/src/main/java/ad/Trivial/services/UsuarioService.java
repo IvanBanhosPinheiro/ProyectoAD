@@ -5,9 +5,7 @@ import ad.Trivial.models.modelosDTO.UsuariODTO;
 import ad.Trivial.repositories.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -26,6 +24,7 @@ public class UsuarioService {
     }
 
     public Usuario guardar(Usuario usuario){
+        usuario.setContraseña(new BCryptPasswordEncoder().encode(usuario.getContraseña()));
         return usuarioRepository.save(usuario);
     }
 
@@ -33,7 +32,7 @@ public class UsuarioService {
         if (usuario.getId() == null){
             return null;
         }else {
-            return usuarioRepository.save(usuario);
+            return guardar(usuario);
         }
     }
     public void eliminar(Long id){

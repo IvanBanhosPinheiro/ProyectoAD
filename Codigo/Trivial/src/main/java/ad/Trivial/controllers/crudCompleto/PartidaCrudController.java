@@ -1,7 +1,6 @@
 package ad.Trivial.controllers.crudCompleto;
 
 import ad.Trivial.models.Partida;
-import ad.Trivial.models.modelosDTO.AgregarPreguntaRequest;
 import ad.Trivial.services.PartidaService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;

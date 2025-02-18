@@ -1,7 +1,5 @@
 package ad.Trivial.controllers.backend;
 
-import ad.Trivial.models.Pregunta;
-import ad.Trivial.models.Usuario;
 import ad.Trivial.models.UsuarioPreguntaPartida;
 import ad.Trivial.services.Preguntaservice;
 import ad.Trivial.services.UsuarioPreguntaPartidaService;
@@ -13,7 +11,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 
 /**
  * Controlador para gestionar las entidades UsuarioPreguntaPartida.

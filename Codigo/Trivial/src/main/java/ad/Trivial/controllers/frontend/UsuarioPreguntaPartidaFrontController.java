@@ -44,7 +44,51 @@ public class UsuarioPreguntaPartidaFrontController {
     @ApiResponse(responseCode = "200", description = "Lista obtenida con éxito",
             content = @Content(mediaType = "application/json",
                     examples = @ExampleObject(value = """
-                            Ejemplo a Poñer
+                            {
+                                "partida": {
+                                    "id": 1,
+                                    "fechaInicio": "2025-02-11",
+                                    "fechaFin": "2025-02-11",
+                                    "usuario": {
+                                        "id": 2,
+                                        "nombre": "Jugador 1",
+                                        "email": "jugador1@ejemplo.com"
+                                    },
+                                    "puntuacion": 15
+                                },
+                                "respuestas": [
+                                    {
+                                        "acertada": true,
+                                        "pregunta": {
+                                            "id": 1,
+                                            "pregunta": "¿Quién es el máximo goleador histórico de la NBA?",
+                                            "respuestas": [
+                                                {
+                                                    "id": 4,
+                                                    "respuesta": "Michael Jordan",
+                                                    "correcta": false
+                                                },
+                                                {
+                                                    "id": 2,
+                                                    "respuesta": "Kobe Bryant",
+                                                    "correcta": false
+                                                },
+                                                {
+                                                    "id": 3,
+                                                    "respuesta": "Kareem Abdul-Jabbar",
+                                                    "correcta": true
+                                                },
+                                                {
+                                                    "id": 1,
+                                                    "respuesta": "LeBron James",
+                                                    "correcta": false
+                                                }
+                                            ]
+                                        }
+                                    },
+                                    ...
+                                   ]
+                             }
                             """)))
     @GetMapping("/{id}")
     public ResponseEntity<?> obtenerDeUnUsuario(

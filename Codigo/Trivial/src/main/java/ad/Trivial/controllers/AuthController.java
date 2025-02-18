@@ -7,10 +7,9 @@ import ad.Trivial.models.Usuario;
 import ad.Trivial.services.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
-
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -33,28 +32,37 @@ public class AuthController {
 
     @PostMapping("/register")
     public String register(@RequestBody Usuario usuario) {
-        // Encriptar la contraseña
-        usuario.setContraseña(new BCryptPasswordEncoder().encode(usuario.getContraseña()));
-        usuario.setId(null);
-        if(usuarioService.guardar(usuario) == null){
-            return "Error al guardar usuario";
+        try {
+            usuario.setId(null);
+            if(usuarioService.guardar(usuario) == null){
+                return "Error al guardar usuario";
+            }
+            return "Usuario registrado con éxito";
+        } catch (Exception e) {
+            return "Error al registrar: " + e.getMessage();
         }
-
-        return "Usuario registrado con éxito";
     }
 
     @PostMapping("/login")
     public String login(@RequestBody Usuario usuario) {
-        // Intentar autenticar al usuario
-        authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(usuario.getEmail(), usuario.getContraseña())
-        );
+        try {
+            System.out.println("Intentando login para: " + usuario.getEmail());
 
-        // Si la autenticación es exitosa, obtener los detalles del usuario
-        UserDetails userDetails = userDetailsService.loadUserByUsername(usuario.getEmail());
+            // Intentar autenticar al usuario
+            Authentication authentication = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(usuario.getEmail(), usuario.getContraseña())
+            );
+            System.out.println("Autenticación exitosa");
 
-        // Generar y devolver el token JWT
-        return jwtService.generateToken(userDetails.getUsername());
+            // Si la autenticación es exitosa, obtener los detalles del usuario
+            UserDetails userDetails = userDetailsService.loadUserByUsername(usuario.getEmail());
+
+            // Generar y devolver el token JWT
+            return jwtService.generateToken(userDetails.getUsername());
+        } catch (Exception e) {
+            System.out.println("Error en login: " + e.getMessage());
+            throw new RuntimeException("Error en la autenticación: " + e.getMessage());
+        }
     }
 
 }
