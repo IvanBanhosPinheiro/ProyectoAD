@@ -53,8 +53,9 @@ public class SpringSecurity {
                         // Auth y H2
                         .requestMatchers("/auth/**").permitAll()
                         .requestMatchers("/h2-console/**").permitAll()
+                        .requestMatchers("/api/partidas/mejores").permitAll()
                         // Admin routes
-                        .requestMatchers("/admin/**").hasAuthority("admin")
+                        .requestMatchers("/admin/**").permitAll()
                         .requestMatchers("/crud/**").hasAuthority("admin")
                         // User routes
                         .requestMatchers("/api/**").hasAnyAuthority("usuario", "admin")

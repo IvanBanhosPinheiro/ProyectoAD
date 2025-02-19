@@ -80,5 +80,12 @@ public class PartidaService {
     }
 
 
-
+    public List<PartidaDTO> obtenerMejores() {
+        List<Partida> partidas = partidaRepository.findTop3ByFechaFinNotNullOrderByPuntuacionDesc();
+        List<PartidaDTO> partidaDTOS = new ArrayList<>();
+        for (Partida partida : partidas){
+            partidaDTOS.add(conversionModelos.transformarPartidaADTO(partida));
+        }
+        return partidaDTOS;
+    }
 }

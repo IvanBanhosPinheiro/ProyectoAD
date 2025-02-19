@@ -31,6 +31,35 @@ public class PartidaFrontController {
     @Autowired
     private UsuarioService usuarioService;
 
+
+    /**
+     * Obtiene las tres mejores partidas.
+     *
+     * @return una lista de las tres mejores partidas
+     */
+    @Operation(summary = "Obtener las tres mejores partidas", description = "Retorna una lista de las tres mejores partidas")
+    @ApiResponse(responseCode = "200", description = "Lista obtenida con éxito",
+            content = @Content(mediaType = "application/json",
+                    examples = @ExampleObject(value = """
+                            [
+                                {
+                                    "id": 1,
+                                    "fechaInicio": "2025-02-14",
+                                    "fechaFin": "2025-02-14",
+                                    "usuario": {
+                                        "id": 2,
+                                        "nombre": "Jugador 1",
+                                        "email": "jugador1@ejemplo.com"
+                                    },
+                                    "puntuacion": 15
+                                }
+                            ]
+                            """)))
+    @GetMapping("/mejores")
+    public List<PartidaDTO> obtenerMejores(){
+        return partidaService.obtenerMejores();
+    }
+
     /**
      * Obtiene todas las partidas.
      *
