@@ -1,11 +1,11 @@
 -- Inicio del script de inserción de datos
--- Crear el usuario administrador
 INSERT INTO usuario (nombre, email, rol, contraseña) VALUES
 ('Admin Usuario', 'admin@ejemplo.com', 'admin', 'contraseña_segura');
 
 -- Crear el usuario normal
 INSERT INTO usuario (nombre, email, rol, contraseña) VALUES
 ('Jugador 1', 'jugador1@ejemplo.com', 'usuario', 'contraseña_segura');
+
 -- Insertar categoríascategoria
 INSERT INTO categoria (nombre, descripcion) VALUES
 ('Historia', 'Preguntas relacionadas con eventos históricos y personajes importantes.'),
@@ -1120,13 +1120,14 @@ INSERT INTO respuesta (texto, es_correcta, pregunta_id) VALUES
 ('Hernán Cortés', FALSE, (SELECT id FROM pregunta ORDER BY id DESC LIMIT 1)),
 ('Vasco Núñez de Balboa', FALSE, (SELECT id FROM pregunta ORDER BY id DESC LIMIT 1));
 
+
 -- Simulación de una partida para el jugador con ID 2 (Jugador 1)
 SET @usuario_id = 2;
 -- Establecer la fecha de inicio
 SET @fecha_inicio = CURRENT_DATE();
 
 -- Calcular la fecha de fin añadiendo 20 minutos
-SET @fecha_fin = DATEADD(MINUTE, 20, @fecha_inicio);
+SET @fecha_fin = CURRENT_DATE();
 
 -- Suponiendo que el jugador respondió correctamente 15 preguntas
 SET @puntuacion = 15;

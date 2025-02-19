@@ -1,11 +1,4 @@
 
-drop table if exists usuario_pregunta_partida;
-drop table if exists partida;
-drop table if exists respuesta;
-drop table if exists pregunta;
-drop table if exists categoria;
-drop table if exists usuario;
-
 -- Crear la tabla usuario
 CREATE TABLE IF NOT EXISTS usuario (
     id BIGINT PRIMARY KEY AUTO_INCREMENT,
