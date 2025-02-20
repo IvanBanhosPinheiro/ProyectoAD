@@ -63,7 +63,8 @@ Tienes dos opciones para ejecutar la API:
 3. La colección se importará y podrás comenzar a probar los endpoints de la API.
 
 ## 6. Estructura del proyecto (backend)
-
+- **Administración con thymeleaf**
+	- Al backend se puede acceder en la ruta http://localhost:8080/admin/ esta parte no tiene seguridad.
 ```
 ad.Trivial
 ├── config
