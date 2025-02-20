@@ -87,6 +87,13 @@ La API de Trivial ofrece los siguientes endpoints:
 - **Autenticación**:
   - `/auth/login`: Inicia sesión y genera un token JWT.
   - `/auth/register`: Registra un nuevo usuario.
+  - Usuario administrador de prueba:
+  ```
+	{
+		"email": "usuario@test.com",
+		"contraseña": "usuario"
+	}
+  ```
 - **CRUD de entidades**:
   - `/crud/categorias`: Gestiona categorías (GET, POST, PUT, DELETE).
   - `/crud/preguntas`: Gestiona preguntas (GET, POST, PUT, DELETE).
