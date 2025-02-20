@@ -107,7 +107,11 @@ La API de Trivial ofrece los siguientes endpoints:
 
 La documentación detallada de la API se encuentra en Swagger, accesible en http://localhost:8080/swagger-ui.html.
 
-## 9. Despliegue
+## 9. Acceso a la base de datos
+
+La base de datos H2 tendras acceso en http://localhost:8080/h2-console con usuario: usuario y contraseña: usuario
+
+## 10. Despliegue
 
 Para desplegar la aplicación en un servidor, se recomienda seguir estos pasos:
 
@@ -117,7 +121,7 @@ Para desplegar la aplicación en un servidor, se recomienda seguir estos pasos:
 4. Configurar el acceso externo si es necesario.
 5. Implementar un sistema de logs y monitoreo (se recomienda Spring Boot Actuator).
 
-## 10. Créditos
+## 11. Créditos
 
 Desarrollado por Iván Baños Piñeiro.
 
