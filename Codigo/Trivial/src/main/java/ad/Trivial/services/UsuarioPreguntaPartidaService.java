@@ -80,6 +80,7 @@ public class UsuarioPreguntaPartidaService {
             usuarioPreguntaPartida.setUsuario(usuario);
             usuarioPreguntaPartida.setPregunta(pregunta);
             usuarioPreguntaPartida.setPartida(partida);
+            usuarioPreguntaPartidaRepository.save(usuarioPreguntaPartida);
             return ResponseEntity.ok(conversionModelos.transformarUsuarioPreguntaPartidaADTO(usuarioPreguntaPartida));
         } catch (Exception e) {
             e.printStackTrace();

@@ -58,6 +58,16 @@ public class UsuarioService {
         }
     }
 
+    public ResponseEntity<UsuariODTO> obtenerPorEmail(String email){
+        Usuario usuario = usuarioRepository.findByEmail(email);
+        if (usuario != null){
+            UsuariODTO usuariODTO = conversionModelos.transformarUsuarioADTO(usuario);
+            return ResponseEntity.ok(usuariODTO);
+        }else{
+            return ResponseEntity.status(404).body(null);
+        }
+    }
+
     public ResponseEntity<?> obtenerTodosSinAdministradoresDTO(){
         List<Usuario> usuarios = usuarioRepository.findAll();
         List<UsuariODTO> usuariODTOS = new ArrayList<>();

@@ -1,6 +1,7 @@
 package ad.Trivial.controllers.frontend;
 
 import ad.Trivial.models.Usuario;
+import ad.Trivial.models.modelosDTO.UsuariODTO;
 import ad.Trivial.services.UsuarioService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -51,10 +52,10 @@ public class UsuarioFrontController {
     /**
      * Obtiene un usuario por su ID.
      *
-     * @param id el ID del usuario
+     * @param email el ID del usuario
      * @return el usuario especificado por su ID
      */
-    @Operation(summary = "Obtener un usuario por ID", description = "Retorna un usuario específico por su ID")
+    @Operation(summary = "Obtener un usuario por email", description = "Retorna un usuario específico por su email")
     @ApiResponse(responseCode = "200", description = "Objeto obtenido con éxito",
             content = @Content(mediaType = "application/json",
                     examples = @ExampleObject(value = """
@@ -64,10 +65,10 @@ public class UsuarioFrontController {
                                 "email": "admin@ejemplo.com"
                             }
                             """)))
-    @GetMapping("/{id}")
-    public ResponseEntity<?> obtenerPorId(
-            @Parameter(description = "ID del usuario", required = true) @PathVariable Long id){
-        return usuarioService.obtenerPorIdDTO(id);
+    @GetMapping("/{email}")
+    public ResponseEntity<UsuariODTO> obtenerPorId(
+            @Parameter(description = "Email del usuario", required = true) @PathVariable String email){
+        return usuarioService.obtenerPorEmail(email);
     }
 
     /**
